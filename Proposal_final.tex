@@ -1,0 +1,432 @@
+\documentclass[11pt, letterpaper]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{parskip}
+\geometry{margin=1in}
+
+\definecolor{courseblue}{HTML}{002452}
+\definecolor{coursegold}{HTML}{FABD0F}
+\definecolor{coursered}{HTML}{B90E31}
+\definecolor{lightblue}{HTML}{E8EEF7}
+
+\hypersetup{colorlinks=true,linkcolor=courseblue,urlcolor=coursered}
+
+\tcbuselibrary{skins}
+\newtcolorbox{guidancebox}{enhanced,colback=lightblue,colframe=courseblue,
+  sharp corners,leftrule=4pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textcolor{courseblue}{\textbf{CISC 473 --- Deep Learning | Fall 2026}}}
+\fancyhead[R]{\small\textcolor{courseblue}{Project Proposal}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\large\bfseries\color{courseblue}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{courseblue}}{}{0em}{}
+
+%% ════════════════════════════════════════════════════════════════
+%% INSTRUCTIONS FOR STUDENTS
+%% Replace every [PLACEHOLDER] with your actual content.
+%% Delete all \guidancebox blocks before submitting.
+%% Submit as a compiled PDF + .tex source in a .zip archive.
+%% ════════════════════════════════════════════════════════════════
+
+\begin{document}
+
+{\centering
+  {\Large\textbf{CISC 473: Deep Learning --- Project Proposal}}\\[0.5em]
+  {\large\textit{P08: Abstractive Summarization via Parameter-Efficient Fine-Tuning}}\\[0.4em]
+  \textbf{Group Members:}\\{}
+  Choo Wen Bin \quad 20630085 \quad (Role: Project Lead)\\{}
+  Nai Junn Rong \quad 20630086 \quad (Role: Research Lead)\\{}
+
+  \textbf{GitHub Repository:} \url{https://github.com/wenbin05/DeepLearningP08}\\[0.3em]
+  \textbf{Date:} \today\\[0.4em]
+  \rule{\linewidth}{0.4pt}
+}
+
+\section{Problem Statement and Motivation}
+
+
+Abstractive text summarization aims to generate concise and coherent summaries
+that capture the important information in a source document using newly
+generated language, rather than simply extracting sentences from the original
+text. This task is challenging because a good summary must simultaneously
+identify salient information, preserve the meaning of the source, remain
+linguistically fluent, and avoid introducing unsupported or contradictory
+facts. Modern encoder--decoder Transformer models such as BART have achieved
+strong performance on abstractive summarization by leveraging large-scale
+pre-training before being adapted to downstream datasets~[1].
+
+However, adapting large pre-trained models through conventional full
+fine-tuning requires updating most or all of their parameters. As model sizes
+increase, this creates substantial computational, memory, and storage costs,
+especially when separate versions of the same model must be maintained for
+different tasks or domains. Parameter-efficient fine-tuning (PEFT) methods
+address this problem by keeping most of the pre-trained model fixed and
+training only a small number of additional or modified parameters. Methods such
+as Low-Rank Adaptation (LoRA)~[2] and Prefix Tuning~[3] have therefore become
+important approaches for reducing the cost of adapting pre-trained Transformer models.
+
+Despite their efficiency, an important question remains: how should limited
+adaptation capacity be used while preserving high-quality summarization performance?
+Reducing the number of trainable parameters may improve efficiency, but it can
+also affect summary quality, factual consistency, and the ability to generalize
+to text from a different domain. These trade-offs are important in practical
+applications such as news summarization, document analysis, and information
+retrieval, where models may need to be adapted repeatedly under limited
+computational resources. This project therefore studies parameter-efficient
+adaptation of BART for abstractive summarization, with particular attention to
+the balance between efficiency, summarization quality, factual reliability,
+and cross-domain generalization.
+
+\section{Literature Survey}
+
+
+\subsection{Related Works}
+
+\paragraph{BART: Lewis et al., 2020~[1].}
+Lewis et al.\ introduced BART, a denoising sequence-to-sequence pre-training
+framework that combines a bidirectional Transformer encoder with an
+autoregressive decoder. The model is pre-trained by corrupting text and
+learning to reconstruct the original sequence, allowing it to perform strongly
+on conditional generation tasks such as abstractive summarization. On the
+CNN/DailyMail benchmark, BART-large achieved ROUGE-1/2/L scores of
+44.16/21.28/40.90, while on XSum it achieved 45.14/22.27/37.25~[1].
+These results established BART as a strong summarization architecture and
+motivate its use as the backbone of our project. However, Lewis et al.\
+adapted BART through conventional full fine-tuning, whereas our project
+investigates whether comparable summarization performance can be obtained by
+training only a small fraction of the model parameters.
+
+\paragraph{LoRA: Hu et al., 2022~[2].}
+Hu et al.\ proposed Low-Rank Adaptation (LoRA), which freezes a pre-trained
+weight matrix $W_0$ and represents its task-specific update using two much
+smaller trainable matrices such that $\Delta W = BA$. This reduces the number
+of parameters that must be optimized while allowing the learned update to be
+merged into the original model at inference time. On GPT-3 175B, a LoRA
+configuration with 4.7 million trainable parameters achieved
+ROUGE-1/2/L scores of 53.8/29.8/45.9 on the SAMSum summarization dataset,
+compared with 52.0/28.0/44.5 for full fine-tuning of approximately
+175 billion parameters~[2]. LoRA is the main PEFT method studied in our
+project. In contrast to the original paper's broad evaluation across several
+models and tasks, we focus specifically on BART-based abstractive
+summarization and study how LoRA rank and placement influence performance,
+efficiency, and transfer.
+
+\paragraph{Prefix-Tuning: Li and Liang, 2021~[3].}
+Li and Liang proposed Prefix-Tuning, a parameter-efficient alternative to
+full fine-tuning in which the pre-trained model remains frozen while a small
+set of continuous task-specific prefix vectors is optimized. These learned
+vectors act as virtual tokens that subsequent Transformer activations can
+attend to. Using BART-large on XSum, full fine-tuning achieved
+ROUGE-1/2/L scores of 45.14/22.27/37.25, while Prefix-Tuning achieved
+43.80/20.93/36.05 using a 2\% configuration and
+42.92/20.03/35.05 using approximately 0.1\% task-specific parameters~[3].
+The authors also found stronger extrapolation to unseen topics in some
+settings. Prefix-Tuning therefore provides an important PEFT baseline in our
+project because it adapts the model through learned conditioning vectors,
+rather than through low-rank modifications of its weight matrices as in LoRA.
+
+\paragraph{AdaLoRA: Zhang et al., 2023~[4].}
+Zhang et al.\ observed that assigning the same low-rank adaptation budget to
+every weight matrix implicitly assumes that all model components are equally
+important, and proposed AdaLoRA to allocate adaptation capacity dynamically
+according to parameter importance. AdaLoRA uses an SVD-inspired
+parameterization and progressively removes less important rank components
+while preserving more capacity in influential matrices. With BART-large and a
+1.10\% trainable-parameter budget, AdaLoRA achieved ROUGE-1/2/L scores of
+44.35/21.13/36.13 on XSum, compared with 43.40/20.20/35.20 for standard
+LoRA. On CNN/DailyMail, the corresponding scores were
+44.96/21.77/42.09 and 44.72/21.58/41.84~[4]. This work is closely related
+to our project because it demonstrates that the allocation of a fixed
+adaptation budget can affect performance. Our study differs by examining
+explicit and interpretable architectural locations within BART rather than
+learning the allocation dynamically.
+
+\paragraph{WeightLoRA: Veprikov et al., 2026~[5].}
+Veprikov et al.\ proposed WeightLoRA, which treats individual LoRA adapters
+as selectable units and learns which adapters are sufficiently important to
+retain during fine-tuning. Their WeightLoRA+ variant reallocates the saved
+parameter budget by increasing the rank of selected adapters. In BART-large
+experiments with rank $r=8$, standard LoRA used approximately 1.05\% of the
+model parameters and obtained ROUGE-1 scores of 36.07 on XSum and 25.28 on
+CNN/DailyMail, whereas WeightLoRA+ used the same reported parameter percentage
+and obtained 36.74 and 25.72, respectively~[5]. These results provide recent
+evidence that the usefulness of LoRA adapters is not uniform throughout a
+model. Our project differs from WeightLoRA because we do not learn which
+individual adapters to retain; instead, we perform a controlled comparison of
+architecturally distinct BART regions under approximately matched trainable
+parameter budgets and additionally examine cross-domain transfer and factual
+consistency.
+
+
+\paragraph{FactCC: Kryscinski et al., 2020~[6].}
+Kryscinski et al.\ argued that lexical-overlap metrics such as ROUGE do not
+directly determine whether a generated summary is factually consistent with
+its source and introduced FactCC, a weakly supervised factual-consistency
+classifier for abstractive summarization. The method generates synthetic
+consistent and inconsistent claims from source documents and trains a
+BERT-based classifier to determine whether a claim is supported by the
+source. FactCC achieved 72.65\% class-balanced accuracy and a weighted F1 score of
+0.86 on its annotated CNN/DailyMail evaluation set, but its balanced
+accuracy decreased to 54.11\% on XSum~[6]. This result is relevant to our
+project because it shows both the importance and difficulty of factuality
+evaluation across domains. We therefore evaluate factual consistency in
+addition to ROUGE and retain human evaluation rather than relying exclusively
+on an automatic factuality metric.
+
+
+Taken together, these studies establish the progression motivating our work.
+BART provides a strong encoder--decoder architecture for abstractive
+summarization, while LoRA and Prefix Tuning demonstrate that downstream
+adaptation can be performed with far fewer trainable parameters than full
+fine-tuning. AdaLoRA and WeightLoRA further indicate that adaptation capacity
+is not equally useful across all model parameters or adapters. At the same
+time, FactCC shows that factual consistency cannot be assessed solely through
+lexical-overlap metrics such as ROUGE. These findings motivate a controlled
+study of where a limited LoRA budget should be placed within BART and whether
+that choice affects not only ROUGE performance but also cross-domain
+generalization and factual consistency.
+
+\subsection{Open Problem}
+
+AdaLoRA~[4] and WeightLoRA~[5] indicate that adaptation capacity need not be
+distributed uniformly across Transformer parameters. However, these works do
+not provide a controlled comparison, in BART-based abstractive summarization,
+of encoder self-attention, decoder self-attention, and encoder--decoder
+cross-attention under approximately matched trainable-parameter budgets.
+
+This distinction is important because these components perform different roles
+in an encoder--decoder model. A direct comparison without controlling parameter
+count would be confounded: adapting more modules generally introduces more
+trainable parameters, making it unclear whether a performance improvement is
+caused by the architectural location of adaptation or simply by additional
+capacity.
+
+Our project addresses this gap by comparing LoRA adaptation across these
+architectural regions while keeping their trainable-parameter counts
+approximately matched. We will investigate whether the placement of a limited
+LoRA budget affects in-domain summarization quality, zero-shot transfer from
+CNN/DailyMail to XSum, factual consistency, and training efficiency.
+
+\section{Proposed Methodology}
+
+\subsection{Baseline}
+
+We will use the pre-trained \texttt{facebook/bart-base} checkpoint from
+HuggingFace Transformers as our backbone model and the standard
+CNN/DailyMail train, validation, and test splits as the primary summarization
+benchmark. A zero-shot BART-base model will first be evaluated to establish
+pre-adaptation performance. We will then implement the three required
+adaptation baselines: full fine-tuning, Prefix Tuning, and Low-Rank Adaptation
+(LoRA), using HuggingFace Transformers and the PEFT library.
+
+For LoRA, we will evaluate ranks $r \in \{4,8,16\}$ and perform the required
+target-projection ablation over $Q$, $K$, $V$, and all selected attention
+projections. Summarization quality will be measured using ROUGE-1, ROUGE-2,
+and ROUGE-L. Training configurations will use the same preprocessing,
+generation settings, and data splits wherever possible so that differences
+between adaptation methods can be compared fairly.
+
+\subsection{Proposed Extension}
+
+Our extension investigates whether the \emph{architectural location} of LoRA
+adaptation affects summarization performance when trainable capacity is held
+approximately constant. We will construct three placement variants in which
+LoRA is applied only to (1) encoder self-attention, (2) decoder self-attention,
+or (3) encoder--decoder cross-attention. The same target projections, LoRA
+rank, and training hyperparameters will be used across these variants.
+Because BART-base contains the same number of layers and hidden dimensionality
+in these corresponding attention blocks, this design yields approximately
+matched trainable-parameter counts and isolates placement as the main
+experimental variable.
+
+We chose this extension because encoder self-attention, decoder self-attention,
+and cross-attention perform different roles: representing the source,
+modeling generated text, and conditioning generation on the source,
+respectively. Our hypothesis is that, even under similar parameter budgets,
+LoRA placement will lead to measurable differences in summarization quality
+and cross-domain robustness. This would indicate that parameter efficiency
+depends not only on how much adaptation capacity is used, but also on where
+that capacity is introduced.
+
+\subsection{Evaluation Plan}
+
+Models will be trained on CNN/DailyMail and evaluated on its held-out test set.
+To assess cross-domain generalization, the same trained models will also be
+evaluated on the standard XSum test split without further fine-tuning.
+
+We will report ROUGE-1, ROUGE-2, and ROUGE-L for summarization quality,
+together with the number and percentage of trainable parameters and training
+time for efficiency. Factual consistency will additionally be evaluated using
+the required human study of 10 participants over 20 generated summaries.
+Comparisons will include zero-shot BART-base, full fine-tuning, Prefix Tuning,
+standard LoRA, and our three LoRA placement variants. Main configurations will
+be repeated with at least three random seeds, and results will be reported as
+mean $\pm$ standard deviation.
+
+\subsection{Early Novel Contribution (Optional Bonus)}
+
+Our proposed novel contribution is a budget-matched ablation of LoRA placement
+across BART's encoder self-attention, decoder self-attention, and
+encoder--decoder cross-attention. By fixing the target projections, LoRA rank,
+and training settings, we isolate architectural placement as the main variable
+rather than confounding it with trainable capacity. We will test whether
+placement affects in-domain ROUGE performance, zero-shot CNN/DailyMail-to-XSum
+transfer, factual consistency, and training efficiency.
+
+\section{Project Timeline and Roles}
+
+\begin{center}
+\small
+\begin{tabular}{lp{7cm}l}
+\toprule
+\textbf{Week} & \textbf{Tasks} & \textbf{Responsible} \\
+\midrule
+
+1 &
+Read BART, LoRA, Prefix-Tuning, AdaLoRA, WeightLoRA, and FactCC;
+set up GitHub repository and Python environment; load CNN/DailyMail and XSum. &
+Both \\
+
+2 &
+Finalize research question, placement experiment, and evaluation protocol;
+implement dataset preprocessing and ROUGE evaluation pipeline;
+complete proposal. \textbf{(Proposal due)} &
+Both \\
+
+3 &
+Evaluate zero-shot BART-base on CNN/DailyMail; verify generation and ROUGE
+pipeline; implement parameter-counting and experiment logging utilities. &
+Wen Bin / Junn Rong \\
+
+4 &
+Implement LoRA using HuggingFace PEFT; run rank experiments
+$r\in\{4,8,16\}$ and begin $Q/K/V$/all target-projection ablations. &
+Wen Bin / Junn Rong \\
+
+5 &
+Complete LoRA target-projection ablations; implement and evaluate Prefix
+Tuning and full fine-tuning baselines under comparable training budgets. &
+Junn Rong / Wen Bin \\
+
+6 &
+Evaluate trained models on XSum without further fine-tuning; compile
+preliminary quality, efficiency, and cross-domain results; perform initial
+analysis and write midterm report. \textbf{(Midterm due)} &
+Both \\
+
+7 &
+Implement encoder-only, decoder-only, and cross-attention LoRA placement
+variants; verify approximately matched trainable-parameter counts; prepare and
+conduct the human factual-consistency evaluation. &
+Wen Bin / Junn Rong \\
+
+8 &
+Complete placement experiments with multiple random seeds; analyse human
+factuality results; measure training time and parameter efficiency; conduct
+extended ablations where required. &
+Both \\
+
+9 &
+Aggregate mean $\pm$ standard deviation results; produce ROUGE-versus-parameter
+trade-off plots and placement comparison tables; perform failure analysis;
+draft final report and clean the codebase. &
+Both \\
+
+10 &
+Finalize report, figures, README, requirements, and single-command
+reproduction workflow; verify results from a clean environment and prepare the
+final presentation. \textbf{(Final~due)} &
+Both \\
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Contribution Declaration}
+
+\begin{center}
+\begin{tabular}{p{3cm}p{9cm}c}
+\toprule
+\textbf{Member} & \textbf{Primary Responsibilities} & \textbf{Estimated \%} \\
+\midrule
+
+Choo Wen Bin &
+Project Lead; experiment design; LoRA implementation; architectural-placement
+experiments; experiment integration; statistical analysis; report coordination
+and final submission. &
+50\% \\
+
+Nai Junn Rong &
+Research Lead; literature review; dataset and evaluation pipeline; Prefix
+Tuning and full fine-tuning baselines; human factual-consistency study;
+reproducibility checks and documentation. &
+50\% \\
+
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{References}
+
+\begin{enumerate}[label={[\arabic*]},leftmargin=*]
+
+\item
+Lewis, M., Liu, Y., Goyal, N., Ghazvininejad, M., Mohamed, A.,
+Levy, O., Stoyanov, V., and Zettlemoyer, L., 2020.
+``BART: Denoising Sequence-to-Sequence Pre-training for Natural Language
+Generation, Translation, and Comprehension.''
+\textit{Proceedings of the 58th Annual Meeting of the Association for
+Computational Linguistics (ACL)}, pp. 7871--7880.
+DOI: \nolinkurl{10.18653/v1/2020.acl-main.703}.
+
+\item
+Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S.,
+Wang, L., and Chen, W., 2022.
+``LoRA: Low-Rank Adaptation of Large Language Models.''
+\textit{International Conference on Learning Representations (ICLR)}.
+arXiv:2106.09685.
+
+\item
+Li, X. L. and Liang, P., 2021.
+``Prefix-Tuning: Optimizing Continuous Prompts for Generation.''
+\textit{Proceedings of the 59th Annual Meeting of the Association for
+Computational Linguistics and the 11th International Joint Conference on
+Natural Language Processing (ACL-IJCNLP)}, pp. 4582--4597.
+DOI: \nolinkurl{10.18653/v1/2021.acl-long.353}.
+
+\item
+Zhang, Q., Chen, M., Bukharin, A., He, P., Cheng, Y., Chen, W.,
+and Zhao, T., 2023.
+``Adaptive Budget Allocation for Parameter-Efficient Fine-Tuning.''
+\textit{International Conference on Learning Representations (ICLR)}.
+arXiv:2303.10512.
+
+\item
+Veprikov, A., Solodkin, V., Alexander, Z., Savchenko, A.,
+and Beznosikov, A., 2026.
+``WeightLoRA: Keep Only Necessary Adapters.''
+\textit{Proceedings of the 64th Annual Meeting of the Association for
+Computational Linguistics (ACL), Volume 1: Long Papers},
+pp. 12419--12437.
+DOI: \nolinkurl{10.18653/v1/2026.acl-long.566}.
+
+\item
+Kryscinski, W., McCann, B., Xiong, C., and Socher, R., 2020.
+``Evaluating the Factual Consistency of Abstractive Text Summarization.''
+\textit{Proceedings of the 2020 Conference on Empirical Methods in
+Natural Language Processing (EMNLP)}, pp. 9332--9346.
+DOI: \nolinkurl{10.18653/v1/2020.emnlp-main.750}.
+
+\end{enumerate}
+
+\end{document}
