@@ -67,7 +67,7 @@ Parameter-efficient fine-tuning for conditional text generation has evolved rapi
 
 \begin{center}
 \small
-\begin{tabular}{llp{5.5cm}p{5.5cm}}
+\begin{tabular}{@{}llp{4.7cm}p{4.7cm}@{}}
 \toprule
 \textbf{Method} & \textbf{Year} & \textbf{Key Idea} & \textbf{Relation to Our Work} \\
 \midrule
@@ -141,7 +141,8 @@ Table~\ref{tab:prelim_results} presents our quantitative evaluation. We first es
 \begin{table}[h]
 \centering
 \small
-\begin{tabular}{lccccc}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}lccccc@{}}
 \toprule
 \textbf{Model Configuration} & \textbf{Trainable Params} & \textbf{Trainable \%} & \textbf{ROUGE-1} & \textbf{ROUGE-2} & \textbf{ROUGE-L} \\
 \midrule
@@ -155,7 +156,8 @@ Encoder Self-Attention LoRA & 147,456 & 0.11\% & 39.82 $\pm$ 0.22 & 17.41 $\pm$ 
 Decoder Self-Attention LoRA & 147,456 & 0.11\% & 40.65 $\pm$ 0.19 & 18.15 $\pm$ 0.16 & 37.82 $\pm$ 0.15 \\
 Cross-Attention LoRA & 147,456 & 0.11\% & \underline{41.42 $\pm$ 0.16} & \underline{18.74 $\pm$ 0.14} & \underline{38.56 $\pm$ 0.15} \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \caption{Preliminary results on CNN/DailyMail test set. All reported experimental metrics are mean $\pm$ standard deviation across 3 random seeds (42, 123, 999). Best overall results are bolded; best budget-matched results are underlined.}
 \label{tab:prelim_results}
 \end{table}
@@ -166,7 +168,7 @@ Table~\ref{tab:qualitative} displays an illustrative test example from CNN/Daily
 \begin{table}[h]
 \centering
 \small
-\begin{tabular}{lp{12cm}}
+\begin{tabular}{@{}lp{11.2cm}@{}}
 \toprule
 \textbf{Source Snippet} & The Federal Aviation Administration announced Thursday a comprehensive plan to modernize national airspace radar tracking systems by 2028. The \$1.4 billion infrastructure initiative aims to replace legacy secondary radar installations with satellite-based ADS-B monitoring, reducing mid-flight routing delays by an estimated 18 percent across major hubs. Industry representatives praised the timeline, though congressional budget analysts raised concerns regarding procurement milestones. \\
 \midrule
@@ -196,7 +198,7 @@ Table~\ref{tab:qualitative} displays an illustrative test example from CNN/Daily
 Our preliminary findings reveal three crucial insights:
 \begin{enumerate}[leftmargin=*,itemsep=1pt]
   \item \textbf{High Efficiency of LoRA in Seq2Seq Models:} Standard LoRA achieves $41.88$ ROUGE-1, retaining $98.4\%$ of full fine-tuning performance ($42.54$) while updating only $0.32\%$ of the parameters.
-  \item \textbf{Cross-Attention as the Primary Adaptation Locus:} Under the identical budget of 147,456 parameters, Cross-Attention LoRA ($41.42$ ROUGE-1) outperforms Decoder Self-Attention ($40.65$) by $+0.77$ points and Encoder Self-Attention ($39.82$) by $+1.60$ points. Cross-Attention alone captures $98.9\%$ of standard LoRA's performance while using only one-third of its parameter budget.
+  \item \textbf{Cross-Attention as the Primary Adaptation Locus:} Under the matched 147,456 parameter budget, Cross-Attention LoRA ($41.42$ ROUGE-1) outperforms Decoder Self-Attention ($40.65$) by $+0.77$ points and Encoder Self-Attention ($39.82$) by $+1.60$ points. Cross-attention alone captures $98.9\%$ of standard LoRA performance while using only one-third of its adapter budget.
   \item \textbf{Functional Specialization:} Encoder representations benefit heavily from pre-training and require minimal adaptation; generation relies primarily on dynamically conditioning the decoder on source tokens through the cross-attention bridge.
 \end{enumerate}
 
@@ -215,7 +217,7 @@ Table~\ref{tab:timeline} outlines our roadmap for the remaining project period.
 \begin{table}[h]
 \centering
 \small
-\begin{tabular}{lp{9.5cm}l}
+\begin{tabular}{@{}lp{8.8cm}l@{}}
 \toprule
 \textbf{Week} & \textbf{Tasks} & \textbf{Responsible} \\
 \midrule
@@ -243,17 +245,13 @@ Both team members have contributed equally to the project across Weeks 3--6 ($50
 
 \begin{center}
 \small
-\begin{tabular}{lcc}
+\begin{tabular}{@{}lp{8.8cm}c@{}}
 \toprule
 \textbf{Member} & \textbf{Contributions (Midterm Period: Weeks 3--6)} & \textbf{\%} \\
 \midrule
-Choo Wen Bin (20630085) & Model architecture implementation; PEFT/LoRA module targeting; & 50\% \\
-& training pipeline automation; GPU hyperparameter tuning; & \\
-& preliminary novel contribution analysis; LaTeX report drafting. & \\
+Choo Wen Bin (20630085) & Model architecture implementation; PEFT/LoRA module targeting; training pipeline automation; GPU hyperparameter tuning; preliminary novel contribution analysis; LaTeX report drafting. & 50\% \\
 \midrule
-Nai Junn Rong (20630086) & Dataset preprocessing pipeline (CNN/DM, XSum); ROUGE evaluation suite; & 50\% \\
-& parameter counting verification tools; baseline reproduction experiments; & \\
-& qualitative analysis synthesis; updated literature review. & \\
+Nai Junn Rong (20630086) & Dataset preprocessing pipeline (CNN/DM, XSum); ROUGE evaluation suite; parameter counting verification tools; baseline reproduction experiments; qualitative analysis synthesis; updated literature review. & 50\% \\
 \bottomrule
 \end{tabular}
 \end{center}
