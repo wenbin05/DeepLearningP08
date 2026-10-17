@@ -1,0 +1,12 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Checkpoints and logs
+results/
+checkpoints/
+*.log
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
