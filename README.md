@@ -50,7 +50,8 @@ requested, but exact results are not guaranteed across devices or library versio
 
 Open [train_colab.ipynb in Colab](https://colab.research.google.com/github/wenbin05/DeepLearningP08/blob/main/train_colab.ipynb).
 Select **Runtime → Change runtime type → T4 GPU**, then run the cells in order.
-The launcher mounts Google Drive, installs an isolated environment, pins the tested
+The launcher mounts Google Drive, installs its own Python 3.12.12 interpreter and
+an isolated environment even when Colab uses a newer Python kernel, pins the tested
 code/model/data revisions, and saves a complete dependency lock for later sessions.
 Results and logs persist in `MyDrive/CISC473_P08/midterm_fp16_v1`.
 
