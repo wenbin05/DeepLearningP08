@@ -4,13 +4,19 @@ Project P08: Abstractive Summarization via Parameter-Efficient Fine-Tuning
 """
 
 import dataclasses
-from typing import List, Optional
+from typing import List
 
 @dataclasses.dataclass
 class ExperimentConfig:
     # Model backbone
     model_name_or_path: str = "facebook/bart-base"
     
+    model_revision: str = "main"
+    dataset_revision: str = "main"
+    data_seed: int = 42  # Fixed subsets across independent training seeds
+    projections: str = "q_proj,v_proj"
+    prefix_tokens: int = 20
+
     # Dataset settings
     dataset_name: str = "cnn_dailymail"
     dataset_config_name: str = "3.0.0"
@@ -37,7 +43,7 @@ class ExperimentConfig:
     adam_beta1: float = 0.9
     adam_beta2: float = 0.999
     adam_epsilon: float = 1e-8
-    fp16: bool = True
+    fp16: bool = False  # Opt in on CUDA; saved explicitly
     
     # Generation parameters (consistent during evaluation)
     num_beams: int = 4
@@ -49,7 +55,7 @@ class ExperimentConfig:
     seeds: List[int] = dataclasses.field(default_factory=lambda: [42, 123, 999])
 
 
-def get_target_modules(placement: str) -> List[str]:
+def get_target_modules(placement: str, projections: str = "q_proj,v_proj") -> List[str]:
     """
     Returns regex or module name list for targeted LoRA injection in BART-base.
     
@@ -58,17 +64,22 @@ def get_target_modules(placement: str) -> List[str]:
       - decoder.layers.{0..5}.self_attn.{q_proj, v_proj, k_proj, out_proj}
       - decoder.layers.{0..5}.encoder_attn.{q_proj, v_proj, k_proj, out_proj}
     """
+    selected = projections.split(",")
+    if not selected or len(set(selected)) != len(selected) or any(
+        p not in {"q_proj", "k_proj", "v_proj", "out_proj"} for p in selected
+    ):
+        raise ValueError("Use unique comma-separated q_proj,k_proj,v_proj,out_proj targets")
     if placement == "all_attn":
         # Standard LoRA: all q_proj and v_proj across encoder and decoder
-        return ["q_proj", "v_proj"]
+        return selected
     elif placement == "encoder_self_attn":
         # Only encoder self-attention
-        return [f"model.encoder.layers.{i}.self_attn.{p}" for i in range(6) for p in ["q_proj", "v_proj"]]
+        return [f"model.encoder.layers.{i}.self_attn.{p}" for i in range(6) for p in selected]
     elif placement == "decoder_self_attn":
         # Only decoder self-attention
-        return [f"model.decoder.layers.{i}.self_attn.{p}" for i in range(6) for p in ["q_proj", "v_proj"]]
+        return [f"model.decoder.layers.{i}.self_attn.{p}" for i in range(6) for p in selected]
     elif placement == "cross_attn":
         # Only encoder-decoder cross-attention
-        return [f"model.decoder.layers.{i}.encoder_attn.{p}" for i in range(6) for p in ["q_proj", "v_proj"]]
+        return [f"model.decoder.layers.{i}.encoder_attn.{p}" for i in range(6) for p in selected]
     else:
         raise ValueError(f"Unknown placement: {placement}. Choose from 'all_attn', 'encoder_self_attn', 'decoder_self_attn', 'cross_attn'.")
