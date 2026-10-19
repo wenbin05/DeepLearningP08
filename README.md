@@ -46,6 +46,24 @@ and dataset downloads are required for experiments, not the synthetic CPU smoke 
 The dependency versions used for each run are saved; deterministic operations are
 requested, but exact results are not guaranteed across devices or library versions.
 
+## Run on Google Colab
+
+Open [train_colab.ipynb in Colab](https://colab.research.google.com/github/wenbin05/DeepLearningP08/blob/main/train_colab.ipynb).
+Select **Runtime → Change runtime type → T4 GPU**, then run the cells in order.
+The launcher mounts Google Drive, installs an isolated environment, pins the tested
+code/model/data revisions, and saves a complete dependency lock for later sessions.
+Results and logs persist in `MyDrive/CISC473_P08/midterm_fp16_v1`.
+
+Run the smoke cell first, then select one configuration and seed in the research
+cell. Repeat seeds 42/123/999 for all seven configurations, or deliberately select
+`all_remaining` to run them sequentially. Completed runs and evaluations are skipped;
+interrupted training is preserved and requires the explicit retry steps in the
+notebook. Automatic mid-epoch resume is not implemented. Use the same GPU type for
+all comparisons, and keep smoke outputs outside the research results directory.
+The complete matrix can exceed a free Colab session; do not rely on `/content`
+for persistent experiment artifacts. The notebook must be run in the user's Colab
+session: its GPU and Drive authorization cannot be controlled from this chat.
+
 ## Reproduce experiments
 
 Complete baseline/placement matrix: 7 configurations × 3 seeds, then both test domains,
