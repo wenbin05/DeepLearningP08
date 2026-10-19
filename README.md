@@ -65,6 +65,28 @@ The complete matrix can exceed a free Colab session; do not rely on `/content`
 for persistent experiment artifacts. The notebook must be run in the user's Colab
 session: its GPU and Drive authorization cannot be controlled from this chat.
 
+## Deadline-day preliminary pilot
+
+`midterm_pilot_colab.ipynb` provides a bounded alternative to the full matrix:
+zero-shot plus the three isolated LoRA placements, seed 42, a fixed 1,024-example
+training subset, 32 updates with warmup 4, and the same 64 validation examples.
+An optional cell evaluates 64-example test subsets in each domain without training.
+All-attention LoRA, full FT and Prefix Tuning can be added if time permits.
+
+If setup already finished in the main notebook, `scripts/run_midterm_pilot_colab.py`
+can be executed in that notebook's namespace instead of repeating installation.
+It uses the existing GPU/Drive connection and writes a separate pilot directory,
+then exports `preliminary_table.md` and `completed_pilot_outputs.json` from actual
+completed runs. It does not overwrite the full research outputs. Automatic retry
+of interrupted training remains unsupported; incomplete runs are preserved.
+
+Report these as **single-seed, short-training, validation-subset pilot results**.
+There is no standard deviation, convergence finding, full-test benchmark, or
+published-baseline reproduction claim. The remaining seeds, guide-required
+baselines/ablations and human study are still outstanding. This reduced execution
+plan does not establish that the instructor waived any rubric requirement.
+GPU duration has not been measured here; use the first run's progress to plan time.
+
 ## Reproduce experiments
 
 Complete baseline/placement matrix: 7 configurations × 3 seeds, then both test domains,
