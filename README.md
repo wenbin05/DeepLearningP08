@@ -1,94 +1,172 @@
-# CISC 473: Deep Learning — Project P08
-## Abstractive Summarization via Parameter-Efficient Fine-Tuning
+# CISC 473 P08: Abstractive Summarization via Parameter-Efficient Fine-Tuning
 
-**Group Members:**
-- **Choo Wen Bin** (20630085) — Project Lead
-- **Nai Junn Rong** (20630086) — Research Lead
+Choo Wen Bin and Nai Junn Rong · [Repository](https://github.com/wenbin05/DeepLearningP08)
 
-**Repository:** `https://github.com/wenbin05/DeepLearningP08`
+Research question: does LoRA placement in BART-base's encoder self-attention,
+decoder self-attention, or encoder–decoder cross-attention affect summarization
+quality when trainable capacity is held fixed?
 
----
+At rank 8 on Q/V, each isolated region has **147,456 trainable parameters**.
+All-attention Q/V LoRA has 442,368. Only the three isolated placements have matched
+parameter budgets. Full fine-tuning has 139,420,416; zero-shot has zero trainable
+parameters. Prefix Tuning with 20 virtual tokens has 184,320. The counting command
+verifies actual instantiated PEFT parameter shapes using meta tensors, without
+pretrained downloads. Saved manifests count real loaded models, and report percentages
+against total parameters **including** adapters (147,456 / 139,567,872 ≈ 0.10565%).
 
-### Project Overview
-This project investigates the impact of architectural placement on Parameter-Efficient Fine-Tuning (PEFT) for abstractive text summarization. Using **BART-base** (`facebook/bart-base`) evaluated on **CNN/DailyMail** and **XSum**, we perform a controlled, budget-matched ablation isolating:
-1. **Encoder Self-Attention LoRA**
-2. **Decoder Self-Attention LoRA**
-3. **Encoder-Decoder Cross-Attention LoRA**
+**Evidence status:** no genuine experiment outputs were supplied in the repository.
+Earlier numerical results, the hard-coded plot, and qualitative examples were
+unsupported and have been removed from the current report. Passing CPU tests does
+not establish any summarization benchmark result. See [the audit](docs/AUDIT.md)
+for discrepancies, rubric coverage, and outstanding work. `Proposal_final.tex` and
+`Proposal.pdf` remain historical proposal documents, not validated experiment records.
 
-Because BART-base consists of 6 encoder and 6 decoder layers of identical hidden dimensionality ($d=768$), applying LoRA ($r=8$ on $W_q, W_v$) to each region yields an **identical budget of exactly 147,456 trainable parameters (0.11% of the base model)**. This isolates architectural placement as the independent variable without capacity confounding.
+## Setup and checks
 
----
+Python 3.10–3.12; run every command from the repository root. A CUDA GPU is strongly
+recommended for the research matrix. CPU checks use a small vocabulary and short
+sequences; full data/model runs require substantially more time, RAM and storage.
 
-### Repository Structure
-```
-├── Proposal.pdf            # Project Proposal PDF (Submitted & Evaluated: 22/20)
-├── Proposal_final.tex      # LaTeX source for Project Proposal
-├── midterm-template.pdf    # Compiled Midterm Report PDF
-├── midterm-template.tex    # LaTeX source for Midterm Report
-├── README.md               # Project documentation and reproduction guide
-├── requirements.txt        # Python package dependencies
-├── train_colab.ipynb       # Colab/Kaggle notebook for GPU execution
-├── figures/
-│   └── pareto_tradeoff.png # ROUGE-1 vs. Trainable Parameters trade-off plot
-└── src/
-    ├── config.py           # Experiment hyperparameters and LoRA placement targets
-    ├── count_params.py     # Verification script for exact parameter budgets
-    ├── evaluate.py         # Standardized ROUGE evaluation metrics
-    ├── model.py            # Model loader and targeted PEFT injection
-    ├── plot_results.py     # Script to generate Pareto trade-off curve
-    └── train.py            # Seq2Seq training script supporting multiple seeds
-```
-
----
-
-### Key Preliminary Findings (Midterm Milestone)
-
-#### 1. Exact Parameter Invariant Verification
-```
-=====================================================================================
-Configuration                    | Trainable Params   | Total Params     | Trainable %
--------------------------------------------------------------------------------------
-Zero-Shot BART-base              |                  0 |      139,420,416 |    0.0000%
-Full Fine-Tuning                 |        139,420,416 |      139,420,416 |  100.0000%
-Standard LoRA (All Attention)    |            442,368 |      139,862,784 |    0.3173%
-Encoder Self-Attention LoRA      |            147,456 |      139,567,872 |    0.1058%
-Decoder Self-Attention LoRA      |            147,456 |      139,567,872 |    0.1058%
-Cross-Attention LoRA             |            147,456 |      139,567,872 |    0.1058%
-=====================================================================================
-```
-
-#### 2. Quantitative Results on CNN/DailyMail (Mean $\pm$ Std over 3 Seeds)
-- **Published Baseline (Lewis et al., 2020):** ROUGE-1: $42.30$ | ROUGE-2: $19.50$ | ROUGE-L: $39.40$
-- **Our Reproduction (Full Fine-Tuning):** ROUGE-1: **$42.54 \pm 0.18$** | ROUGE-2: **$19.68 \pm 0.14$** | ROUGE-L: **$39.52 \pm 0.16$** (Matches published baseline within $0.5\%$).
-- **Standard LoRA (All Attention):** ROUGE-1: $41.88 \pm 0.15$ | ROUGE-2: $19.12 \pm 0.12$ | ROUGE-L: $38.94 \pm 0.14$
-- **Cross-Attention LoRA (147k Params, 0.11%):** ROUGE-1: **$41.42 \pm 0.16$** | ROUGE-2: **$18.74 \pm 0.14$** | ROUGE-L: **$38.56 \pm 0.15$**
-  - *Captures 98.9% of standard LoRA performance using 66.7% fewer adapter parameters.*
-  - *Outperforms Encoder Self-Attention LoRA ($39.82$) by $+1.60$ ROUGE-1 under the exact same parameter capacity.*
-
----
-
-### Quickstart & Reproduction
-
-#### 1. Parameter Budget Verification
-Run the standalone parameter verification script:
 ```bash
-python src/count_params.py
+python -m venv .venv
+source .venv/bin/activate
+# CPU-only machines: install the smaller wheel first. Omit this line for CUDA.
+pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt
+pip check
+python -m src.count_params --live
+python -m pytest -q
 ```
 
-#### 2. Generate Pareto Trade-Off Plot
+Use `python -m src.train`, not `python src/train.py`, so package imports resolve.
+The first metric check downloads the pinned official Hugging Face Evaluate ROUGE
+module. No alternate or approximate metric is substituted if loading fails.
+Tests require that small download once (subsequent runs can use the cache). Model
+and dataset downloads are required for experiments, not the synthetic CPU smoke tests.
+The dependency versions used for each run are saved; deterministic operations are
+requested, but exact results are not guaranteed across devices or library versions.
+
+## Reproduce experiments
+
+Complete baseline/placement matrix: 7 configurations × 3 seeds, then both test domains,
+aggregation, and plots:
+
 ```bash
-python src/plot_results.py
+bash scripts/run_midterm.sh
 ```
 
-#### 3. Training with Targeted LoRA Placement
-To run training across experimental seeds (`42`, `123`, `999`):
+The script resolves immutable model and dataset revisions once for the entire matrix.
+It trains on a fixed 10,000-example CNN/DailyMail subset (data seed 42), validates
+on the full official validation split, and evaluates each final checkpoint on full
+CNN/DailyMail and XSum test splits. Seeds **42, 123, 999** independently initialize
+adapters and training randomness; data membership stays fixed. Full fine-tuning
+uses learning rate 3e-5; adapters use 3e-4. All trained configurations use the same
+examples, 3 epochs, and effective batch size 32 on a single device. Equal updates
+are an exposure control, **not evidence of matched FLOPs or elapsed compute**.
+Compare saved training time/update counts when reporting the guide's compute-budget
+requirement; a strict wall-clock/FLOP comparison remains a separate experiment.
+
+For the guide's rank and projection ablations too:
+
 ```bash
-# Cross-Attention LoRA (Primary Proposed Configuration)
-python src/train.py --placement cross_attn --seed 42
-
-# Encoder Self-Attention LoRA
-python src/train.py --placement encoder_self_attn --seed 42
-
-# Decoder Self-Attention LoRA
-python src/train.py --placement decoder_self_attn --seed 42
+EXTENDED_ABLATIONS=1 OUTPUT_DIR=results/extended bash scripts/run_midterm.sh
 ```
+
+This adds all-attention Q/V ranks 4 and 16 (rank 8 already exists), and rank-8
+Q-only, K-only, V-only, and Q/K/V/O runs. These comparisons deliberately vary capacity;
+they are separate from the matched-budget placement question. This is a large matrix,
+not a quick local test. Do not claim it ran merely because the script exists.
+
+Independent pilot, then held-out evaluation (no further fine-tuning):
+
+```bash
+python -m src.train --placement cross_attn --seed 42 --output_dir results/pilot
+python -m src.train --eval_only results/pilot/cross_attn_r8_q_proj,v_proj_seed42 \
+  --eval_dataset cnn_dailymail
+python -m src.train --eval_only results/pilot/cross_attn_r8_q_proj,v_proj_seed42 \
+  --eval_dataset xsum
+```
+
+Each invocation refuses to overwrite its run/evaluation directory. Use distinct
+`--output_dir` roots for protocols with different sample limits, prefix lengths,
+epochs, or precision. For a short **execution check**, use e.g.
+`--max_train_samples 8 --max_eval_samples 2 --max_steps 1 --warmup_steps 0`.
+This still downloads BART-base and the dataset. Such outputs are pilot results,
+not full-test benchmarks. During training `--max_eval_samples` limits validation;
+with `--eval_only` it limits test. Omit it for a full official evaluation. Use `--max_train_samples all` to train on
+the full official training split; report that as a separate protocol from the 10k pilot.
+`--fp16` explicitly enables mixed precision on CUDA; default is FP32.
+
+Additional controls: `--lora_rank`, `--projections` (comma-separated PEFT projection
+names), `--prefix_tokens`, `--num_train_epochs`, `--max_steps`, `--warmup_steps`,
+`--data_seed`, `--model_revision`, `--dataset_revision`; test data revision uses
+`--eval_revision`. `src/config.py` contains shared batch sizes and length limits.
+Warmup 500 is the research default; reduce it explicitly for short pilots.
+
+## Saved artifacts and evaluation protocol
+
+Each run saves:
+
+- `run_config.json`: experiment/model/Trainer/generation configuration, exact target
+  modules, parameter counts, pinned model/data/metric revisions, selected-example
+  hashes, seeds, package versions, hardware, and Git revision/dirty status.
+- `model/`: final full model or PEFT adapter plus tokenizer. Keep `run_config.json`
+  with adapters: evaluation loads the original base checkpoint at its pinned SHA.
+- `validation_results.json`: ROUGE-1/2/L, validation loss, training metrics and wall
+  time in seconds. Epoch checkpoints and `trainer_state.json` retain training history.
+- `validation_predictions.jsonl`: IDs, source text, generated text, original and
+  truncated references. Test evaluation saves the same fields under
+  `evaluations/<dataset>_<example-hash>/predictions.jsonl` and `test_results.json`.
+
+CNN/DailyMail training uses official `train`, validation uses `validation`; final
+in-domain evaluation and XSum transfer use official `test`. Inputs truncate to
+1024 BPE tokens; training labels to 128, with dynamic padding and `-100` loss masks.
+ROUGE uses **full original references**, stemming, and macro mean per-example F1
+×100 from Hugging Face Evaluate. It reports `rougeL`, not `rougeLsum`; do not assume
+comparability with papers using a different metric implementation or protocol.
+
+Generation uses beam width 4, length penalty 2, min length 56, max length 128,
+3-gram blocking, and no sampling. The same settings apply to both test domains.
+Minimum length 56 can be a poor fit for XSum's single-sentence summaries; changing
+it must be labeled as a distinct evaluation ablation. Neither domain is used to
+select training hyperparameters or checkpoints. Current selection is final epoch/update.
+
+Aggregate genuine completed files and plot them:
+
+```bash
+python -m src.aggregate_results --results_dir results/pilot --phase test \
+  --output results/pilot/summary.json
+python -m src.plot_results --summary results/pilot/summary.json \
+  --output results/pilot/cnn_pareto.png
+python -m src.plot_results --summary results/pilot/summary.json \
+  --dataset xsum --output results/pilot/xsum_pareto.png
+```
+
+Aggregation requires exactly one run per expected seed and compatible within-group
+protocols; it rejects missing seeds, duplicates and mixed subsets/settings. Standard
+deviation uses `ddof=1`. For explicitly labeled single-seed pilots, pass `--seeds 42`;
+standard deviation is then unavailable (`null`), not zero. Plots use saved values
+and include zero-shot on a symlog parameter axis. No expected placement ranking is encoded.
+
+## Report and remaining work
+
+`midterm-template.tex` and its rebuilt PDF distinguish implemented facilities from
+unexecuted experiments. Baseline reproduction, all quality scores, efficiency
+comparisons, XSum transfer, and human factuality judgments still need genuine runs.
+The P08 human study requires 10 participants and 20 summaries; predictions are
+exported for study preparation, but participant collection, blinding and analysis
+remain future work. FactCC/profiling are optional future work, not implemented results.
+The supplied guide also requires comparative literature discussion and quantitative
+midterm evidence. An audit cannot replace that evidence or verify faculty scope approval.
+
+Rebuild the report (LaTeX distribution with the packages in the source):
+
+```bash
+pdflatex -interaction=nonstopmode -halt-on-error midterm-template.tex
+pdflatex -interaction=nonstopmode -halt-on-error midterm-template.tex
+```
+
+The report includes an AI Usage disclosure for this audit/revision; the team must
+review it and add any earlier AI use. The notebook uses the same repository commands
+and requirements rather than a parallel implementation. Commit the review branch
+before research runs so manifests record a clean reproducible Git revision.

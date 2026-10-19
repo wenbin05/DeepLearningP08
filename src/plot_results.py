@@ -1,54 +1,49 @@
-"""
-Generates the Pareto Trade-off figure: ROUGE-1 vs. Trainable Parameters.
-Project P08: Abstractive Summarization via Parameter-Efficient Fine-Tuning
-"""
-
-import os
+"""Plot saved multi-seed summaries without hard-coded experimental values."""
+import argparse
+import json
+from pathlib import Path
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-def generate_pareto_plot(output_path="figures/pareto_tradeoff.png"):
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    
-    # Data points: (trainable_params, rouge1_mean, rouge1_std, label, color, marker)
-    data = [
-        (139_420_416, 42.54, 0.18, "Full Fine-Tuning (100%)", "#B90E31", "s"),
-        (442_368,     41.88, 0.15, "Standard LoRA (0.32%)", "#002452", "o"),
-        (147_456,     41.42, 0.16, "Cross-Attn LoRA (0.11%)", "#007A3D", "*"),
-        (147_456,     40.65, 0.19, "Decoder Self-Attn LoRA (0.11%)", "#E69F00", "^"),
-        (147_456,     39.82, 0.22, "Encoder Self-Attn LoRA (0.11%)", "#56B4E9", "v"),
-    ]
-    
-    plt.figure(figsize=(8, 5), dpi=300)
-    plt.style.use("seaborn-v0_8-whitegrid" if "seaborn-v0_8-whitegrid" in plt.style.available else "default")
-    
-    for params, mean, std, label, color, marker in data:
-        ms = 12 if marker == "*" else 8
-        plt.errorbar(params, mean, yerr=std, fmt=marker, color=color, ecolor=color,
-                     elinewidth=1.5, capsize=4, markersize=ms, label=label)
-        
-    plt.xscale("log")
-    plt.xlabel("Trainable Parameters (Log Scale)", fontsize=11, fontweight="bold")
-    plt.ylabel("ROUGE-1 Score (CNN/DailyMail)", fontsize=11, fontweight="bold")
-    plt.title("Parameter Efficiency vs. Summarization Quality in BART-base", fontsize=12, fontweight="bold", pad=12)
-    plt.ylim(39.0, 43.5)
-    
-    # Annotate key finding
-    plt.annotate(
-        "Cross-Attn captures 98.9% of LoRA\nwith 66.7% fewer adapter params",
-        xy=(147_456, 41.42),
-        xytext=(30_000, 42.2),
-        arrowprops=dict(arrowstyle="->", color="#007A3D", lw=1.5),
-        fontsize=9,
-        fontweight="bold",
-        color="#007A3D",
-        bbox=dict(boxstyle="round,pad=0.4", fc="#E8F5E9", ec="#007A3D", lw=1)
-    )
-    
-    plt.legend(frameon=True, loc="lower right", fontsize=9)
-    plt.tight_layout()
-    plt.savefig(output_path, dpi=300)
-    plt.close()
-    print(f"[SUCCESS] Figure saved to {output_path}")
 
-if __name__ == "__main__":
-    generate_pareto_plot()
+def generate_pareto_plot(summary_path, output_path, dataset='cnn_dailymail', phase='test'):
+    data = [r for r in json.loads(Path(summary_path).read_text())
+            if r['dataset'] == dataset and r['phase'] == phase]
+    if not data:
+        raise ValueError('No results for the requested dataset and phase')
+    # Do not put different split subsets or generation protocols on one comparison plot.
+    def evaluation_protocol(row):
+        p = row['protocol']
+        return (p['evaluation'] or p['data']['validation'], p['generation'],
+                p['metric_protocol'], p['reference_protocol'])
+    if any(evaluation_protocol(r) != evaluation_protocol(data[0]) for r in data):
+        raise ValueError('Incompatible data or generation protocols in comparison')
+    training_data = [r['protocol']['data']['train'] for r in data if r['protocol']['data']['train'] is not None]
+    if training_data and any(t != training_data[0] for t in training_data):
+        raise ValueError('Different training subsets in comparison')
+    fig, ax = plt.subplots(figsize=(9, 5))
+    for row in data:
+        label = f"{row['placement']} r={row['rank']} {row['projections']} (n={row['n']})"
+        score = row['metrics']['rouge1']
+        ax.errorbar(row['parameters']['trainable'], score['mean'], yerr=score['std'],
+                    fmt='o', capsize=4, label=label)
+    ax.set_xscale('symlog', linthresh=1)  # Includes zero-shot's zero trainable parameters.
+    ax.set(xlabel='Trainable parameters (symlog)', ylabel='ROUGE-1 F1 × 100',
+           title=f'{dataset} {phase}: mean ± sample standard deviation')
+    ax.legend(fontsize=7)
+    fig.tight_layout()
+    output = Path(output_path)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output, dpi=200)
+    plt.close(fig)
+
+
+if __name__ == '__main__':
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--summary', required=True)
+    p.add_argument('--output', default='figures/pareto_tradeoff.png')
+    p.add_argument('--dataset', choices=['cnn_dailymail', 'xsum'], default='cnn_dailymail')
+    p.add_argument('--phase', choices=['validation', 'test'], default='test')
+    a = p.parse_args()
+    generate_pareto_plot(a.summary, a.output, a.dataset, a.phase)

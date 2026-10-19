@@ -1,10 +1,17 @@
-torch>=2.0.0
-transformers>=4.36.0
-peft>=0.7.0
-datasets>=2.16.0
-evaluate>=0.4.1
-rouge-score>=0.1.2
-accelerate>=0.25.0
-scipy>=1.10.0
-numpy>=1.24.0
-tqdm>=4.66.0
+# Python 3.10–3.12. For CPU-only torch, see README.
+torch==2.5.1
+transformers==4.44.2
+peft==0.13.2
+datasets==3.1.0
+evaluate==0.4.3
+rouge-score==0.1.2
+accelerate==1.1.1
+numpy==1.26.4
+scipy==1.14.1
+matplotlib==3.9.2
+pytest==8.3.3
+# Bound transitive packages whose newer releases change compatibility or artifact loading.
+pyarrow==18.1.0
+pandas==2.2.3
+huggingface-hub==0.26.2
+nltk==3.9.1

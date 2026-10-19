@@ -1,12 +1,10 @@
-# Python bytecode
 __pycache__/
+.pytest_cache/
+.venv/
+results/
+*.egg-info/
 *.py[cod]
 *$py.class
-
-# Checkpoints and logs
-results/
 checkpoints/
 *.log
-
-# Jupyter checkpoints
 .ipynb_checkpoints/
