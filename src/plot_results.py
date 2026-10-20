@@ -29,8 +29,10 @@ def generate_pareto_plot(summary_path, output_path, dataset='cnn_dailymail', pha
         ax.errorbar(row['parameters']['trainable'], score['mean'], yerr=score['std'],
                     fmt='o', capsize=4, label=label)
     ax.set_xscale('symlog', linthresh=1)  # Includes zero-shot's zero trainable parameters.
-    ax.set(xlabel='Trainable parameters (symlog)', ylabel='ROUGE-1 F1 × 100',
-           title=f'{dataset} {phase}: mean ± sample standard deviation')
+    title = (f'{dataset} {phase}: single-seed scores (uncertainty not estimated)'
+             if all(r['n'] == 1 for r in data)
+             else f'{dataset} {phase}: mean ± sample standard deviation')
+    ax.set(xlabel='Trainable parameters (symlog)', ylabel='ROUGE-1 F1 × 100', title=title)
     ax.legend(fontsize=7)
     fig.tight_layout()
     output = Path(output_path)

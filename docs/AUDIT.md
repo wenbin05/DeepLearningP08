@@ -1,5 +1,13 @@
 # P08 implementation and report audit
 
+Update after the initial audit: the team has now supplied four completed seed-42
+Colab pilot records, retained under `experiments/midterm_pilot_seed42`. The revised
+report includes those measured validation-subset results. The sections below record
+the original audit and its initial evidence state; they do not invalidate the new
+pilot. Full benchmark reproduction, extra seeds, required baseline/ablation runs,
+test/transfer and human-study evidence remain outstanding. See that directory's
+README for the subsequent artifact checks and their limits.
+
 Audit input: repository at `cc03f50`, all six original Python scripts,
 `train_colab.ipynb`, requirements, README, proposal, and midterm LaTeX/PDF; attached
 *CISC 473 Capstone Project Guide, Fall 2026*, reproducibility requirements,
