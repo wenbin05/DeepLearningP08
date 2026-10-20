@@ -1,0 +1,16 @@
+{
+  "train": {
+    "independently_reloaded": true,
+    "samples": 1024,
+    "revision": "96df5e686bee6baa90b8bee7c28b81fa3fa6223d",
+    "ids_sha256": "880a06cb4a8d9189e78f3d90640d1aefc2d552be8c55b70baa00009a3fb97e1b",
+    "matches_export": true
+  },
+  "validation": {
+    "independently_reloaded": true,
+    "samples": 64,
+    "revision": "96df5e686bee6baa90b8bee7c28b81fa3fa6223d",
+    "ids_sha256": "933377c7c769d5ee3980d4ac6da82307dd9fc42567ff627a6d68978582812502",
+    "matches_export": true
+  }
+}

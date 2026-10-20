@@ -1,0 +1,29 @@
+{
+  "input_sha256": "bc16459b4f8d0c801e53029b2e9f1249142a44ec1f303d544c9350d16b4a8c0e",
+  "markdown_matches_json": true,
+  "common_protocol_and_data_hashes": true,
+  "records": {
+    "zero_shot": {
+      "status": "completed",
+      "seed": 42,
+      "configured_updates": 0
+    },
+    "encoder_self_attn": {
+      "status": "completed",
+      "seed": 42,
+      "configured_updates": 32
+    },
+    "decoder_self_attn": {
+      "status": "completed",
+      "seed": 42,
+      "configured_updates": 32
+    },
+    "cross_attn": {
+      "status": "completed",
+      "seed": 42,
+      "configured_updates": 32
+    }
+  },
+  "independent_rouge_recomputation": false,
+  "limitation": "Predictions, checkpoints, per-example scores and test/transfer results were not supplied."
+}

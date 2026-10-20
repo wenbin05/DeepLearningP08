@@ -1,0 +1,15 @@
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Configuration & Trainable & R-1 & R-2 & R-L & Val. loss & Loop s \\
+\midrule
+Zero-shot BART-base & 0 & 41.04 & 18.87 & 25.84 & 3.6372 & 0.0 \\
+Encoder self-attention & 147,456 & 41.02 & 19.05 & 25.47 & 3.2659 & 135.4 \\
+Decoder self-attention & 147,456 & 41.32 & 19.13 & 25.93 & 3.2647 & 105.5 \\
+Cross-attention & 147,456 & 41.31 & 18.88 & 25.73 & 3.2401 & 103.7 \\
+\bottomrule
+\end{tabular}
+\caption{Single-seed pilot on 64 CNN/DailyMail validation examples (seed 42). LoRA runs use 1,024 training examples and 32 updates. Scores are ROUGE F1 $\times100$; no standard deviations are available. Loop time includes epoch validation and checkpoint saving.}
+\label{tab:prelim_results}
+\end{table}

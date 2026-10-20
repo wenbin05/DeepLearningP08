@@ -14,12 +14,15 @@ verifies actual instantiated PEFT parameter shapes using meta tensors, without
 pretrained downloads. Saved manifests count real loaded models, and report percentages
 against total parameters **including** adapters (147,456 / 139,567,872 ≈ 0.10565%).
 
-**Evidence status:** no genuine experiment outputs were supplied in the repository.
-Earlier numerical results, the hard-coded plot, and qualitative examples were
-unsupported and have been removed from the current report. Passing CPU tests does
-not establish any summarization benchmark result. See [the audit](docs/AUDIT.md)
-for discrepancies, rubric coverage, and outstanding work. `Proposal_final.tex` and
-`Proposal.pdf` remain historical proposal documents, not validated experiment records.
+**Evidence status:** the team supplied four completed single-seed Colab pilot records:
+zero-shot plus the three isolated placements. They use 1,024 training examples,
+32 updates, and the same 64 validation examples. The revised report and
+[retained artifacts](experiments/midterm_pilot_seed42/README.md) describe these
+measurements and limitations. Full-baseline reproduction, multi-seed uncertainty,
+full test/transfer results and factuality evaluation remain outstanding. Earlier
+unsupported benchmark scores and examples remain excluded. See
+[the audit](docs/AUDIT.md) for the original discrepancies. The proposal remains a
+historical plan, not a validated experiment record.
 
 ## Setup and checks
 
@@ -169,14 +172,28 @@ and include zero-shot on a symlog parameter axis. No expected placement ranking 
 
 ## Report and remaining work
 
-`midterm-template.tex` and its rebuilt PDF distinguish implemented facilities from
-unexecuted experiments. Baseline reproduction, all quality scores, efficiency
-comparisons, XSum transfer, and human factuality judgments still need genuine runs.
-The P08 human study requires 10 participants and 20 summaries; predictions are
-exported for study preparation, but participant collection, blinding and analysis
-remain future work. FactCC/profiling are optional future work, not implemented results.
-The supplied guide also requires comparative literature discussion and quantitative
-midterm evidence. An audit cannot replace that evidence or verify faculty scope approval.
+`midterm-template.tex` and its rebuilt PDF now report the supplied single-seed pilot.
+The decoder--cross ROUGE-1 gap is about 0.01 points on 64 validation examples;
+no reliable ranking or multi-seed uncertainty is inferred. Validation loss improved
+for all three placements while generated-summary ROUGE changes were mixed.
+Full fine-tuning, Prefix Tuning, all-attention comparisons, additional seeds,
+rank/projection ablations, full CNN/DailyMail/XSum tests, and the human study still
+require genuine research outputs. Only the four validation records were supplied;
+no optional test or transfer results are claimed. Predictions and checkpoints were
+not supplied, so ROUGE was checked against the export/table but not recomputed.
+
+Regenerate the pilot's checked table, per-run artifacts, single-seed summary and plot:
+
+```bash
+python -m scripts.prepare_midterm_report
+python -m src.plot_results --summary experiments/midterm_pilot_seed42/summary.json \
+  --phase validation --output experiments/midterm_pilot_seed42/rouge_vs_parameters.png
+```
+
+The human study requires 10 participants and 20 summaries. Prediction export is
+implemented, but participant collection, blinding and analysis remain future work.
+The report's AI disclosure covers code, Colab troubleshooting, artifact consistency
+checks and drafting; the team executed the GPU pilot and supplied its results.
 
 Rebuild the report (LaTeX distribution with the packages in the source):
 
