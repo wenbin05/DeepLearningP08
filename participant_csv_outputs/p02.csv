@@ -1,0 +1,21 @@
+participant_id,summary_id,judgment,evidence
+P02,S07,consistent,
+P02,S05,consistent,
+P02,S15,consistent,
+P02,S08,consistent,
+P02,S17,consistent,
+P02,S09,consistent,
+P02,S12,consistent,
+P02,S01,consistent,
+P02,S02,inconsistent,"Summary claims: 'Vincent Stanford, who is charged with killing Ms Scott, 26, in Easter Sunday, dumped her body into bushland and dumped her remains in a bubble bath.' Article states: 'Ms Scott's body was found by police in Cocoparra National Park, north of Griffith, NSW, on April 10.' The summary incorrectly states that Stanford dumped her remains in a bubble bath, but the article specifies the body was found in Cocoparra National Park, not in a bubble bath. Additionally, the summary mentions 'dumped her body into bushland' which is consistent with the article's description of the location, but the bubble bath detail is unsupported and contradicts the article's specific finding location."
+P02,S19,consistent,
+P02,S20,consistent,
+P02,S06,consistent,
+P02,S16,consistent,
+P02,S11,inconsistent,Summary states: 'The British taekwondo star has been denied citizenship by the Republic of Moldova.' Article states: 'The British taekwondo star has been granted citizenship by Moldova and plans to fight for them in Rio 2016.' The summary claims denial of citizenship while the article confirms grant of citizenship.
+P02,S14,consistent,
+P02,S10,consistent,
+P02,S03,consistent,
+P02,S13,consistent,
+P02,S04,consistent,
+P02,S18,consistent,
