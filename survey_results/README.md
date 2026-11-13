@@ -7,7 +7,10 @@ Each file contains 20 ratings, identified by participant ID and summary ID (200 
 
 - `responses/`: latest submitted CSVs, preserved byte-for-byte.
 - [manifest.json](manifest.json): upload provenance, original Git blob IDs and format-check results.
-- [REVIEW_NOTES.md](REVIEW_NOTES.md): interpretation issues to resolve before reporting findings.
+- [REVIEW_NOTES.md](REVIEW_NOTES.md): interpretation limitations retained with the results.
+- [ANALYSIS.md](ANALYSIS.md) and [analysis.json](analysis.json): descriptive results and agreement.
+- [summary_key.json](summary_key.json): summary-to-configuration mapping, released after rating collection.
+- [analyze.py](analyze.py): standalone, standard-library reproduction script.
 
 ## Columns
 
@@ -33,10 +36,21 @@ participant IDs, one occurrence of every expected summary ID per file, valid
 labels and nonempty evidence for inconsistent judgments. No ratings or explanation
 wording were edited during organization.
 
-These are submitted responses. Format validation does not establish authorship,
-independence or correctness of the judgments. Collection details and the issues
-in REVIEW_NOTES.md still need to be resolved before describing a completed
-independent human evaluation in the report.
+The project team has confirmed that people independently read the articles and
+compared them with the summaries to complete these ratings. This collection
+statement is team-reported; file checks establish completeness, not independent
+verification of the collection process. Results are analyzed as submitted, without
+correction of judgments. Low agreement and rubric-interpretation issues are
+reported in ANALYSIS.md and REVIEW_NOTES.md.
 
 Keep these raw files unchanged. Save any participant clarifications or adjudicated
 interpretations separately, with a clear record of what changed and why.
+
+## Reproduce the descriptive analysis
+
+```bash
+python survey_results/analyze.py
+```
+
+Python 3 and its standard library are sufficient. The command reads the response
+CSVs and summary key and regenerates analysis.json without modifying raw ratings.

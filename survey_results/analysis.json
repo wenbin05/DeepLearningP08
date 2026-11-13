@@ -1,0 +1,120 @@
+{
+  "participants": 10,
+  "summaries": 20,
+  "distinct_articles": 5,
+  "ratings": 200,
+  "per_summary": {
+    "S12": {
+      "consistent": 6,
+      "inconsistent": 4
+    },
+    "S20": {
+      "consistent": 6,
+      "inconsistent": 4
+    },
+    "S08": {
+      "consistent": 4,
+      "inconsistent": 6
+    },
+    "S16": {
+      "consistent": 6,
+      "inconsistent": 4
+    },
+    "S11": {
+      "inconsistent": 10
+    },
+    "S13": {
+      "consistent": 5,
+      "inconsistent": 5
+    },
+    "S18": {
+      "consistent": 9,
+      "inconsistent": 1
+    },
+    "S07": {
+      "consistent": 4,
+      "inconsistent": 6
+    },
+    "S10": {
+      "consistent": 6,
+      "inconsistent": 4
+    },
+    "S02": {
+      "inconsistent": 5,
+      "consistent": 5
+    },
+    "S15": {
+      "consistent": 5,
+      "inconsistent": 5
+    },
+    "S04": {
+      "consistent": 6,
+      "inconsistent": 4
+    },
+    "S03": {
+      "consistent": 3,
+      "inconsistent": 7
+    },
+    "S05": {
+      "consistent": 6,
+      "inconsistent": 4
+    },
+    "S17": {
+      "consistent": 7,
+      "inconsistent": 3
+    },
+    "S14": {
+      "consistent": 4,
+      "inconsistent": 6
+    },
+    "S06": {
+      "consistent": 4,
+      "inconsistent": 6
+    },
+    "S01": {
+      "consistent": 2,
+      "inconsistent": 8
+    },
+    "S09": {
+      "consistent": 4,
+      "inconsistent": 6
+    },
+    "S19": {
+      "consistent": 6,
+      "inconsistent": 4
+    }
+  },
+  "per_model": {
+    "cross_attn": {
+      "counts": {
+        "consistent": 29,
+        "inconsistent": 21
+      },
+      "consistent_fraction_among_decided": 0.58
+    },
+    "decoder_self_attn": {
+      "counts": {
+        "consistent": 23,
+        "inconsistent": 27
+      },
+      "consistent_fraction_among_decided": 0.46
+    },
+    "encoder_self_attn": {
+      "counts": {
+        "consistent": 19,
+        "inconsistent": 31
+      },
+      "consistent_fraction_among_decided": 0.38
+    },
+    "zero_shot": {
+      "counts": {
+        "consistent": 27,
+        "inconsistent": 23
+      },
+      "consistent_fraction_among_decided": 0.54
+    }
+  },
+  "pairwise_agreement": 0.5222222222222223,
+  "fleiss_kappa_three_categories": 0.04406206927215341,
+  "limitation": "Descriptive study: five shared articles, one training seed. Ratings and summaries share participants/articles; 200 ratings are not 200 independent examples."
+}

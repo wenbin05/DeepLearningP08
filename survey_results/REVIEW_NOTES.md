@@ -21,7 +21,8 @@ responses and request clarification rather than rewriting their judgments.
 
 ## Reporting boundary
 
-Document how responses were collected, whether assistance was used, and whether
-any wording was standardized after collection. Do not infer independent human
-participation solely from the ten participant IDs or the presence of varied text.
-Keep collection-method questions separate from file-format validation.
+The project team has now confirmed independent reading and comparison of the
+articles and summaries by people completing the ratings. Record this as the
+team-reported collection method, not as something established by CSV validation.
+All responses are retained as submitted. The rubric issues above remain limitations;
+no participant's judgment has been rewritten to improve agreement.

@@ -13,7 +13,7 @@
     "valid_judgment_labels": true,
     "required_explanations_present": true
   },
-  "provenance_status": "Collection method not established by format validation",
+  "provenance_status": "Team-confirmed independent human reading and comparison; collection process not independently observed by the analysis tool",
   "files": [
     {
       "path": "responses/p01.csv",
@@ -65,5 +65,10 @@
       "original_path": "p10.csv",
       "git_blob_sha": "7c9189081efd3f66e78ee68d38bf39c54466d435"
     }
-  ]
+  ],
+  "collection_method": {
+    "reported_by": "project team",
+    "statement": "People independently completed the ratings by going through the text and comparing it with the summary",
+    "analysis_policy": "Retain and analyze all submitted ratings without adjudication or alteration"
+  }
 }
