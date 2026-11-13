@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "description": "Latest submitted survey responses; raw contents preserved",
+  "source_commit": "fd90ad3c6dc3e109f8dccea845f0b4c44abbb01f",
+  "superseded_commit": "d2384e209b0f01f3277c7585e8015de1881f0ceb",
+  "format_validation": {
+    "files": 10,
+    "rows_per_file": 20,
+    "total_ratings": 200,
+    "expected_columns": true,
+    "participant_ids_match_filenames": true,
+    "complete_unique_summary_ids": true,
+    "valid_judgment_labels": true,
+    "required_explanations_present": true
+  },
+  "provenance_status": "Collection method not established by format validation",
+  "files": [
+    {
+      "path": "responses/p01.csv",
+      "original_path": "p01.csv",
+      "git_blob_sha": "8084e1450397e5925d6cfcf91596fbc2d78f00c4"
+    },
+    {
+      "path": "responses/p02.csv",
+      "original_path": "p02.csv",
+      "git_blob_sha": "6ab169011a7645134f339d8d602ee69d1e8f82d5"
+    },
+    {
+      "path": "responses/p03.csv",
+      "original_path": "p03.csv",
+      "git_blob_sha": "e696ef236d15a0dc1207b236eb0d0c7eba34f2c1"
+    },
+    {
+      "path": "responses/p04.csv",
+      "original_path": "p04.csv",
+      "git_blob_sha": "74e01916994bd98393db4a47ec24c6fef89e327f"
+    },
+    {
+      "path": "responses/p05.csv",
+      "original_path": "p05.csv",
+      "git_blob_sha": "cb4a486b51a5b2579b8b02df957105df3c3970ee"
+    },
+    {
+      "path": "responses/p06.csv",
+      "original_path": "p06.csv",
+      "git_blob_sha": "531924744de350429c2e9e3f9485990fe7524874"
+    },
+    {
+      "path": "responses/p07.csv",
+      "original_path": "p07.csv",
+      "git_blob_sha": "2ae762f10b692ac70e5c13c30bbce5f457b62f42"
+    },
+    {
+      "path": "responses/p08.csv",
+      "original_path": "p08.csv",
+      "git_blob_sha": "7aa7a4d353a2b954e1a8736e76828a7a45e928c1"
+    },
+    {
+      "path": "responses/p09.csv",
+      "original_path": "p09.csv",
+      "git_blob_sha": "4ce18268bc43181be4233b2b9053c568dc717594"
+    },
+    {
+      "path": "responses/p10.csv",
+      "original_path": "p10.csv",
+      "git_blob_sha": "7c9189081efd3f66e78ee68d38bf39c54466d435"
+    }
+  ]
+}
