@@ -1,0 +1,82 @@
+{
+  "S01": {
+    "mode": "zero_shot",
+    "example_id": "1872c284053c494149c6abca7ee6ddeb7a540335"
+  },
+  "S02": {
+    "mode": "encoder_self_attn",
+    "example_id": "a1957ee2b300c69631c5780e365adb83f31dcc8a"
+  },
+  "S03": {
+    "mode": "decoder_self_attn",
+    "example_id": "9244b5fca8cf00f88087f6996a96c426348d4f5d"
+  },
+  "S04": {
+    "mode": "decoder_self_attn",
+    "example_id": "a1957ee2b300c69631c5780e365adb83f31dcc8a"
+  },
+  "S05": {
+    "mode": "zero_shot",
+    "example_id": "9244b5fca8cf00f88087f6996a96c426348d4f5d"
+  },
+  "S06": {
+    "mode": "decoder_self_attn",
+    "example_id": "1872c284053c494149c6abca7ee6ddeb7a540335"
+  },
+  "S07": {
+    "mode": "decoder_self_attn",
+    "example_id": "50d9a45d62322610753e9d1e52d428c184aaeb94"
+  },
+  "S08": {
+    "mode": "encoder_self_attn",
+    "example_id": "50d9a45d62322610753e9d1e52d428c184aaeb94"
+  },
+  "S09": {
+    "mode": "zero_shot",
+    "example_id": "50d9a45d62322610753e9d1e52d428c184aaeb94"
+  },
+  "S10": {
+    "mode": "decoder_self_attn",
+    "example_id": "993b3c0cc577fb3612989096fbdf515fd85aa416"
+  },
+  "S11": {
+    "mode": "encoder_self_attn",
+    "example_id": "1872c284053c494149c6abca7ee6ddeb7a540335"
+  },
+  "S12": {
+    "mode": "zero_shot",
+    "example_id": "993b3c0cc577fb3612989096fbdf515fd85aa416"
+  },
+  "S13": {
+    "mode": "cross_attn",
+    "example_id": "1872c284053c494149c6abca7ee6ddeb7a540335"
+  },
+  "S14": {
+    "mode": "encoder_self_attn",
+    "example_id": "9244b5fca8cf00f88087f6996a96c426348d4f5d"
+  },
+  "S15": {
+    "mode": "cross_attn",
+    "example_id": "50d9a45d62322610753e9d1e52d428c184aaeb94"
+  },
+  "S16": {
+    "mode": "encoder_self_attn",
+    "example_id": "993b3c0cc577fb3612989096fbdf515fd85aa416"
+  },
+  "S17": {
+    "mode": "cross_attn",
+    "example_id": "a1957ee2b300c69631c5780e365adb83f31dcc8a"
+  },
+  "S18": {
+    "mode": "zero_shot",
+    "example_id": "a1957ee2b300c69631c5780e365adb83f31dcc8a"
+  },
+  "S19": {
+    "mode": "cross_attn",
+    "example_id": "993b3c0cc577fb3612989096fbdf515fd85aa416"
+  },
+  "S20": {
+    "mode": "cross_attn",
+    "example_id": "9244b5fca8cf00f88087f6996a96c426348d4f5d"
+  }
+}

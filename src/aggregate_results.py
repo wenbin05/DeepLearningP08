@@ -1,6 +1,7 @@
 """Aggregate saved completed experiments; require all independent seeds by default."""
 import argparse
 import json
+import math
 from pathlib import Path
 from statistics import mean, stdev
 from src.train import write_json
@@ -24,6 +25,7 @@ def protocol(result):
             'evaluation': m.get('evaluation'), 'metric_protocol': m['metric_protocol'],
             'reference_protocol': m['reference_protocol'], 'metric_revision': m.get('metric_revision'),
             'model_config': m.get('model_config'),
+            'checkpoint_selection': m.get('checkpoint_selection'),
             'environment': {k: m['environment'].get(k) for k in
                 ('packages', 'device', 'cuda', 'world_size', 'git_commit', 'git_dirty')},
             'evaluation_environment': m.get('evaluation_environment') and {
@@ -52,9 +54,13 @@ def aggregate(paths, expected_seeds=(42, 123, 999)):
         metrics = {}
         for metric in ('rouge1', 'rouge2', 'rougeL', 'loss'):
             values = [r['metrics'][f'{prefix}_{metric}'] for _, r in runs]
+            if any(not math.isfinite(v) or v < 0 or (metric != 'loss' and v > 100) for v in values):
+                raise ValueError(f'{key}: invalid {metric} values')
             metrics[metric] = {'mean': mean(values), 'std': stdev(values) if len(values) > 1 else None}
         if prefix == 'validation':
             values = [r['training_seconds'] for _, r in runs]
+            if any(not math.isfinite(v) or v < 0 for v in values):
+                raise ValueError(f'{key}: invalid training times')
             metrics['training_seconds'] = {'mean': mean(values), 'std': stdev(values) if len(values) > 1 else None}
         summary.append({'placement': key[0], 'rank': key[1], 'projections': key[2],
                         'prefix_tokens': key[3], 'phase': key[4], 'dataset': key[5],

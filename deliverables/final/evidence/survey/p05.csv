@@ -1,0 +1,21 @@
+participant_id,summary_id,judgment,evidence
+P05,S11,inconsistent,"The article states that Aaron Cook is 24 years old, while the summary states that he is 31 years old."
+P05,S05,consistent,
+P05,S16,consistent,"The summary and article both accurately report the incident of a police horse named Charly being tagged with graffiti in Venice Beach, Los Angeles. The summary correctly states that the vandalism occurred on Tuesday during daylight, and that the tagger managed to spray the horse without the handlers seeing. The article provides additional details such as the tag being 'RBS' and an arrow, the paint coming off easily, and the LAPD's request for the public's help in identifying the person responsible. The summary's quote from local Mark Stegall is also present in the article."
+P05,S02,consistent,
+P05,S12,consistent,"The summary and article both accurately report the incident of a police horse named Charly being tagged with graffiti in Venice Beach, Los Angeles. The summary correctly states that the vandalism occurred on Tuesday during daylight, and that the tagger managed to spray the horse without the handlers seeing. The article provides additional details such as the tag being 'RBS' and an arrow, the paint coming off easily, and the LAPD's request for the public's help in identifying the person responsible. The summary's quote from local Mark Stegall is also present in the article."
+P05,S13,consistent,"The summary and article both agree that Aaron Cook plans to compete for Moldova at the 2016 Olympics in Rio, and that he has been granted citizenship by Moldova. The article provides additional details about Cook's reasons for switching nationalities, his past performances, and the potential involvement of the British Olympic Association."
+P05,S01,inconsistent,"The summary states that Aaron Cook plans to compete for Moldova at the 2016 Olympics in Rio, but the article mentions that GB Taekwondo could yet block the move, suggesting that there is a possibility that Cook may not actually compete for Moldova in the Olympics."
+P05,S20,consistent,
+P05,S17,consistent,
+P05,S03,inconsistent,"In the summary, it is stated that the driver was transported to Baylor University Medical Center in Dallas because of the injuries she sustained during the wreck. However, in the article, it is mentioned that Mayeaux admitted to police that she was trying to take her own life after undergoing treatment, implying that she was already in the hospital before the accident."
+P05,S04,consistent,
+P05,S06,consistent,
+P05,S07,consistent,
+P05,S10,consistent,"The summary and article both accurately report the incident of a police horse named Charly being tagged with graffiti in Venice Beach, Los Angeles. The summary correctly states that the vandalism occurred on Tuesday during daylight, and that the tagger managed to spray the horse without the handlers seeing. The article provides additional details such as the tag being 'RBS' and an arrow, the paint coming off easily, and the LAPD's request for the public's help in identifying the person responsible. The summary's quote from local Mark Stegall is also present in the article."
+P05,S15,consistent,
+P05,S14,consistent,
+P05,S09,consistent,
+P05,S19,consistent,"The summary and article both accurately report that a police horse named Charly was tagged with graffiti in Venice Beach, and that the LAPD is searching for the person responsible. The summary and article both attribute a quote to local Mark Stegall about the incident. The article provides additional details such as the tag being 'RBS' and an arrow, the paint coming off easily, the LAPD requesting public help, and the contact information for reporting information. The summary does not mention the tag's specific details or the cleaning of the paint, but these are not contradictory claims."
+P05,S18,consistent,
+P05,S08,consistent,

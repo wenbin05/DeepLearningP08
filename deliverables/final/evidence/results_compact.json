@@ -1,0 +1,912 @@
+[
+  {
+    "placement": "all_attn",
+    "rank": 4,
+    "projections": "q_proj,v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 39.11704045465236,
+        "std": 0.4563719022588265
+      },
+      "rouge2": {
+        "mean": 16.920928126270287,
+        "std": 0.5715242544958719
+      },
+      "rougeL": {
+        "mean": 25.101525285737917,
+        "std": 0.4577359546921675
+      },
+      "loss": {
+        "mean": 2.5007994969685874,
+        "std": 0.012032356819578536
+      }
+    },
+    "parameters": {
+      "trainable": 221184,
+      "total": 139641600,
+      "trainable_pct": 0.15839406022274163
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 4,
+    "projections": "q_proj,v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 17.23909524378844,
+        "std": 0.13945968738482126
+      },
+      "rouge2": {
+        "mean": 3.1036598377375326,
+        "std": 0.1407210078445709
+      },
+      "rougeL": {
+        "mean": 10.993715122043271,
+        "std": 0.09951526135261748
+      },
+      "loss": {
+        "mean": 2.8036879698435464,
+        "std": 0.008358344606619461
+      }
+    },
+    "parameters": {
+      "trainable": 221184,
+      "total": 139641600,
+      "trainable_pct": 0.15839406022274163
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "k_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 38.64715573800951,
+        "std": 0.16623877836382683
+      },
+      "rouge2": {
+        "mean": 17.04549544070621,
+        "std": 0.11845906492547285
+      },
+      "rougeL": {
+        "mean": 24.201067291737985,
+        "std": 0.16104859112779768
+      },
+      "loss": {
+        "mean": 3.051412582397461,
+        "std": 0.0039627735281992735
+      }
+    },
+    "parameters": {
+      "trainable": 221184,
+      "total": 139641600,
+      "trainable_pct": 0.15839406022274163
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "k_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 16.695363954728812,
+        "std": 0.07052090052002848
+      },
+      "rouge2": {
+        "mean": 2.6423223665599167,
+        "std": 0.09282079165516534
+      },
+      "rougeL": {
+        "mean": 10.600569369193487,
+        "std": 0.11217703479050511
+      },
+      "loss": {
+        "mean": 3.0694727102915444,
+        "std": 0.0069509981311618564
+      }
+    },
+    "parameters": {
+      "trainable": 221184,
+      "total": 139641600,
+      "trainable_pct": 0.15839406022274163
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "q_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 38.098222370355515,
+        "std": 0.1126920164854107
+      },
+      "rouge2": {
+        "mean": 16.841302296382686,
+        "std": 0.15110858008518502
+      },
+      "rougeL": {
+        "mean": 24.17214004405772,
+        "std": 0.12150349864009768
+      },
+      "loss": {
+        "mean": 2.9531941413879395,
+        "std": 0.0022833188490461085
+      }
+    },
+    "parameters": {
+      "trainable": 221184,
+      "total": 139641600,
+      "trainable_pct": 0.15839406022274163
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "q_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 16.58673205243884,
+        "std": 0.09663783865035208
+      },
+      "rouge2": {
+        "mean": 2.649963326382745,
+        "std": 0.03166392529801463
+      },
+      "rougeL": {
+        "mean": 10.582486332964681,
+        "std": 0.009462834024430454
+      },
+      "loss": {
+        "mean": 2.8991952737172446,
+        "std": 0.009534038244541071
+      }
+    },
+    "parameters": {
+      "trainable": 221184,
+      "total": 139641600,
+      "trainable_pct": 0.15839406022274163
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "q_proj,k_proj,v_proj,out_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 39.54179127679219,
+        "std": 0.3184981470169691
+      },
+      "rouge2": {
+        "mean": 16.85285666149956,
+        "std": 0.24658679698567063
+      },
+      "rougeL": {
+        "mean": 25.781451019576615,
+        "std": 0.5479764718430011
+      },
+      "loss": {
+        "mean": 2.291455030441284,
+        "std": 0.010587839029854308
+      }
+    },
+    "parameters": {
+      "trainable": 884736,
+      "total": 140305152,
+      "trainable_pct": 0.6305798378665383
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "q_proj,k_proj,v_proj,out_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 17.850131090110146,
+        "std": 0.08366488630912264
+      },
+      "rouge2": {
+        "mean": 3.0136107313375904,
+        "std": 0.03780484396715557
+      },
+      "rougeL": {
+        "mean": 11.483217544246779,
+        "std": 0.07685943651084427
+      },
+      "loss": {
+        "mean": 2.8041056791941323,
+        "std": 0.004274304401054907
+      }
+    },
+    "parameters": {
+      "trainable": 884736,
+      "total": 140305152,
+      "trainable_pct": 0.6305798378665383
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 38.9191275658752,
+        "std": 0.07945892517215176
+      },
+      "rouge2": {
+        "mean": 16.840088170506668,
+        "std": 0.1476881119807475
+      },
+      "rougeL": {
+        "mean": 25.07706902355398,
+        "std": 0.23781483148005048
+      },
+      "loss": {
+        "mean": 2.500981171925863,
+        "std": 0.005954745836346566
+      }
+    },
+    "parameters": {
+      "trainable": 442368,
+      "total": 139862784,
+      "trainable_pct": 0.3162871404018384
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 17.157686703249794,
+        "std": 0.09420477218420081
+      },
+      "rouge2": {
+        "mean": 3.014788086309283,
+        "std": 0.02724564367932265
+      },
+      "rougeL": {
+        "mean": 11.003232620315512,
+        "std": 0.05798955791174148
+      },
+      "loss": {
+        "mean": 2.8060904343922934,
+        "std": 0.008945253998325344
+      }
+    },
+    "parameters": {
+      "trainable": 442368,
+      "total": 139862784,
+      "trainable_pct": 0.3162871404018384
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 39.07550833493251,
+        "std": 0.351841695296923
+      },
+      "rouge2": {
+        "mean": 16.96343771110357,
+        "std": 0.4526148034639288
+      },
+      "rougeL": {
+        "mean": 24.683194999192533,
+        "std": 0.48852259682350857
+      },
+      "loss": {
+        "mean": 2.541539112726847,
+        "std": 0.0033979217852098233
+      }
+    },
+    "parameters": {
+      "trainable": 221184,
+      "total": 139641600,
+      "trainable_pct": 0.15839406022274163
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 8,
+    "projections": "v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 17.05182150985637,
+        "std": 0.07019945839426955
+      },
+      "rouge2": {
+        "mean": 2.811576919695666,
+        "std": 0.04660245884721377
+      },
+      "rougeL": {
+        "mean": 10.829932893057947,
+        "std": 0.04678253168696431
+      },
+      "loss": {
+        "mean": 2.8203616937001548,
+        "std": 0.003393336032157524
+      }
+    },
+    "parameters": {
+      "trainable": 221184,
+      "total": 139641600,
+      "trainable_pct": 0.15839406022274163
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 16,
+    "projections": "q_proj,v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 38.87077230368949,
+        "std": 0.35625662108837247
+      },
+      "rouge2": {
+        "mean": 16.808863150419324,
+        "std": 0.4154931522834786
+      },
+      "rougeL": {
+        "mean": 25.0820844441763,
+        "std": 0.2978292028185747
+      },
+      "loss": {
+        "mean": 2.498855988184611,
+        "std": 0.0038952298190346965
+      }
+    },
+    "parameters": {
+      "trainable": 884736,
+      "total": 140305152,
+      "trainable_pct": 0.6305798378665383
+    }
+  },
+  {
+    "placement": "all_attn",
+    "rank": 16,
+    "projections": "q_proj,v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 17.174029106563548,
+        "std": 0.1352742642319713
+      },
+      "rouge2": {
+        "mean": 3.0320357730309913,
+        "std": 0.04052024407105873
+      },
+      "rougeL": {
+        "mean": 10.91260723084715,
+        "std": 0.15480034536204648
+      },
+      "loss": {
+        "mean": 2.812199513117472,
+        "std": 0.006244128604671111
+      }
+    },
+    "parameters": {
+      "trainable": 884736,
+      "total": 140305152,
+      "trainable_pct": 0.6305798378665383
+    }
+  },
+  {
+    "placement": "cross_attn",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 38.56020180272388,
+        "std": 0.42106162594234586
+      },
+      "rouge2": {
+        "mean": 16.78298670198669,
+        "std": 0.4226998758708537
+      },
+      "rougeL": {
+        "mean": 24.421443496739215,
+        "std": 0.507383703189509
+      },
+      "loss": {
+        "mean": 2.7755547364552817,
+        "std": 0.0024041734237541137
+      }
+    },
+    "parameters": {
+      "trainable": 147456,
+      "total": 139567872,
+      "trainable_pct": 0.10565182221879832
+    }
+  },
+  {
+    "placement": "cross_attn",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 16.869237199938222,
+        "std": 0.023477670919569715
+      },
+      "rouge2": {
+        "mean": 2.7449377111404836,
+        "std": 0.021969847086684372
+      },
+      "rougeL": {
+        "mean": 10.734222934201632,
+        "std": 0.027061489383858297
+      },
+      "loss": {
+        "mean": 2.8898961544036865,
+        "std": 0.009361462172186061
+      }
+    },
+    "parameters": {
+      "trainable": 147456,
+      "total": 139567872,
+      "trainable_pct": 0.10565182221879832
+    }
+  },
+  {
+    "placement": "decoder_self_attn",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 37.50113626973698,
+        "std": 0.22174358585461182
+      },
+      "rouge2": {
+        "mean": 16.172986753774023,
+        "std": 0.16446142723540996
+      },
+      "rougeL": {
+        "mean": 23.52768970643592,
+        "std": 0.18416308429877443
+      },
+      "loss": {
+        "mean": 2.7017340660095215,
+        "std": 0.001883991411487923
+      }
+    },
+    "parameters": {
+      "trainable": 147456,
+      "total": 139567872,
+      "trainable_pct": 0.10565182221879832
+    }
+  },
+  {
+    "placement": "decoder_self_attn",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 16.852282408104998,
+        "std": 0.10604021751343658
+      },
+      "rouge2": {
+        "mean": 2.740180940847758,
+        "std": 0.07964562856251899
+      },
+      "rougeL": {
+        "mean": 10.673815747509009,
+        "std": 0.07635349487745614
+      },
+      "loss": {
+        "mean": 2.780226945877075,
+        "std": 0.0015653411165998043
+      }
+    },
+    "parameters": {
+      "trainable": 147456,
+      "total": 139567872,
+      "trainable_pct": 0.10565182221879832
+    }
+  },
+  {
+    "placement": "encoder_self_attn",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 37.745302008686714,
+        "std": 0.2874608122236053
+      },
+      "rouge2": {
+        "mean": 16.48381696169037,
+        "std": 0.15069285898147963
+      },
+      "rougeL": {
+        "mean": 23.28697406260812,
+        "std": 0.2276014925514869
+      },
+      "loss": {
+        "mean": 2.9261032740275064,
+        "std": 0.007026169383899254
+      }
+    },
+    "parameters": {
+      "trainable": 147456,
+      "total": 139567872,
+      "trainable_pct": 0.10565182221879832
+    }
+  },
+  {
+    "placement": "encoder_self_attn",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 16.682503855608196,
+        "std": 0.16322171462934595
+      },
+      "rouge2": {
+        "mean": 2.848484071245406,
+        "std": 0.09582488999090918
+      },
+      "rougeL": {
+        "mean": 10.600181257937225,
+        "std": 0.09846699789372089
+      },
+      "loss": {
+        "mean": 3.0010294119517007,
+        "std": 0.010032290866211692
+      }
+    },
+    "parameters": {
+      "trainable": 147456,
+      "total": 139567872,
+      "trainable_pct": 0.10565182221879832
+    }
+  },
+  {
+    "placement": "full_ft",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 40.06110046097618,
+        "std": 0.6230160363902977
+      },
+      "rouge2": {
+        "mean": 17.212810713097763,
+        "std": 0.3312837902952559
+      },
+      "rougeL": {
+        "mean": 26.344477534149505,
+        "std": 0.39249789935461715
+      },
+      "loss": {
+        "mean": 2.017335573832194,
+        "std": 0.0015047595225140074
+      }
+    },
+    "parameters": {
+      "trainable": 139420416,
+      "total": 139420416,
+      "trainable_pct": 100.0
+    }
+  },
+  {
+    "placement": "full_ft",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 19.16943151569414,
+        "std": 0.22934208363300687
+      },
+      "rouge2": {
+        "mean": 3.1559943116748657,
+        "std": 0.20526420605671605
+      },
+      "rougeL": {
+        "mean": 12.588619847756954,
+        "std": 0.1401359188917804
+      },
+      "loss": {
+        "mean": 2.895580768585205,
+        "std": 0.00133775753292799
+      }
+    },
+    "parameters": {
+      "trainable": 139420416,
+      "total": 139420416,
+      "trainable_pct": 100.0
+    }
+  },
+  {
+    "placement": "prefix",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 15.049074542855616,
+        "std": 3.0254600498017874
+      },
+      "rouge2": {
+        "mean": 2.413904049897564,
+        "std": 0.9682943263637789
+      },
+      "rougeL": {
+        "mean": 10.634675843168772,
+        "std": 1.420284479748365
+      },
+      "loss": {
+        "mean": 7.1019822756449384,
+        "std": 0.33672415604516387
+      }
+    },
+    "parameters": {
+      "trainable": 184320,
+      "total": 139604736,
+      "trainable_pct": 0.13202990477343118
+    }
+  },
+  {
+    "placement": "prefix",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 9.747077947391471,
+        "std": 1.7087685656218952
+      },
+      "rouge2": {
+        "mean": 1.257275602882176,
+        "std": 0.5024666132541966
+      },
+      "rougeL": {
+        "mean": 7.758698531570753,
+        "std": 1.0675898394963452
+      },
+      "loss": {
+        "mean": 6.557130018870036,
+        "std": 0.47002518939256327
+      }
+    },
+    "parameters": {
+      "trainable": 184320,
+      "total": 139604736,
+      "trainable_pct": 0.13202990477343118
+    }
+  },
+  {
+    "placement": "zero_shot",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "cnn_dailymail",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 38.60710432999882,
+        "std": 0.0
+      },
+      "rouge2": {
+        "mean": 16.911318289319695,
+        "std": 0.0
+      },
+      "rougeL": {
+        "mean": 24.28614199112838,
+        "std": 0.0
+      },
+      "loss": {
+        "mean": 3.7324647903442383,
+        "std": 0.0
+      }
+    },
+    "parameters": {
+      "trainable": 0,
+      "total": 139420416,
+      "trainable_pct": 0.0
+    }
+  },
+  {
+    "placement": "zero_shot",
+    "rank": 8,
+    "projections": "q_proj,v_proj",
+    "dataset": "xsum",
+    "seeds": [
+      42,
+      123,
+      999
+    ],
+    "n": 3,
+    "metrics": {
+      "rouge1": {
+        "mean": 16.843937583470904,
+        "std": 0.0
+      },
+      "rouge2": {
+        "mean": 2.6165765358727633,
+        "std": 0.0
+      },
+      "rougeL": {
+        "mean": 10.507882641249905,
+        "std": 0.0
+      },
+      "loss": {
+        "mean": 3.4283907413482666,
+        "std": 0.0
+      }
+    },
+    "parameters": {
+      "trainable": 0,
+      "total": 139420416,
+      "trainable_pct": 0.0
+    }
+  }
+]

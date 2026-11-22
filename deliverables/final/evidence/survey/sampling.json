@@ -1,0 +1,20 @@
+{
+  "sampling_seed": 42,
+  "training_seed": 42,
+  "articles": [
+    "50d9a45d62322610753e9d1e52d428c184aaeb94",
+    "1872c284053c494149c6abca7ee6ddeb7a540335",
+    "a1957ee2b300c69631c5780e365adb83f31dcc8a",
+    "993b3c0cc577fb3612989096fbdf515fd85aa416",
+    "9244b5fca8cf00f88087f6996a96c426348d4f5d"
+  ],
+  "summaries": 20,
+  "participants": 10,
+  "source_predictions": [
+    "results/cpu_placement_v1/zero_shot_r8_q_proj,v_proj_seed42/evaluations/cnn_dailymail_7a9f3c017f89/predictions.jsonl",
+    "results/cpu_placement_v1/encoder_self_attn_r8_q_proj,v_proj_seed42/evaluations/cnn_dailymail_7a9f3c017f89/predictions.jsonl",
+    "results/cpu_placement_v1/decoder_self_attn_r8_q_proj,v_proj_seed42/evaluations/cnn_dailymail_7a9f3c017f89/predictions.jsonl",
+    "results/cpu_placement_v1/cross_attn_r8_q_proj,v_proj_seed42/evaluations/cnn_dailymail_7a9f3c017f89/predictions.jsonl"
+  ],
+  "design": "Five shared articles \u00d7 four configurations; each participant rates all 20 outputs"
+}

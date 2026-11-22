@@ -1,0 +1,21 @@
+participant_id,summary_id,judgment,evidence
+P07,S10,inconsistent,"‘I think it's unfortunate, but people love to tag things in Venice, so really, I guess a horse is just the next step,’ local Mark Stegall told CBS'"
+P07,S16,inconsistent,"‘I think it's unfortunate, but people love to tag things in Venice, so really, I guess a horse is just the next step,’ local Mark Stegall told CBS'"
+P07,S07,inconsistent,Xavi also set the record for the most appearances in the knockout phase of the competition having now featured in 53 matches in the latter stages.
+P07,S18,consistent,
+P07,S12,inconsistent,"‘I think it's unfortunate, but people love to tag things in Venice, so really, I guess a horse is just the next step,’ local Mark Stegall told CBS'"
+P07,S14,inconsistent,"The summary states: 'Jack Rivera, who drove the truck along the highway for around two hours, said that she was found 'inebriated' and 'melling of alcohol' by medics who pulled her from her crushed Chevrolet Suburban.' The article states: 'Lt. Ron Turbeville, with the Waxahachie police department, said that she was found 'inebriated' and 'smelling of alcohol' by medics who pulled her from her crushed Chevrolet Suburban.' The summary attributes this quote to Rivera, while the article attributes it to Turbeville.'"
+P07,S08,inconsistent,Xavi made his 148th Champions League appearance against ParisG on Tuesday night. (The article states Xavi made his 148th Champions League appearance against PSG on Tuesday night.)
+P07,S03,inconsistent,"The summary states: ""off course: Police said the driver in the Chevrolet Suburban SUV, identified as 49-year-old Laura Michelle Mayeaux, was transported to Baylor University Medical Center in Dallas because of the injuries she sustained during the wreck."""
+P07,S04,inconsistent,"The summary states that Anika Stanford met with Mayor Maytom ‘last Thursday’, while the article states she met with him ‘last week’. Furthermore, the summary states that ‘police were lead to Stephanie Scott’s remains by the family of her accused killer, Vincent Stanford’, while the article clarifies that ‘the family of Stephanie Scott’s accused murdered have offered their condolences’ and that ‘police were lead to Stephanie Scott’s remains by the family of her accused killer, Vincent Stanford’."
+P07,S19,inconsistent,"The summary states 'a horse is just the next step,' while the article states 'It's cruel and it's not respectful'"
+P07,S13,inconsistent,Three time European champion Aaron Cook (right) has refused to fight under the British flag since May 2012.
+P07,S05,consistent,
+P07,S11,inconsistent,"The summary states: 'The 31-year-old has been granted citizenship by Moldova.' The article states: '24, who was overlooked for the Great Britain taekwondo squad at London 2012, applied for citizenship after receiving funding from Moldovan billionaire Igor Iuzefovici and has now received his passport from the small eastern European state.'"
+P07,S02,consistent,
+P07,S17,consistent,
+P07,S20,consistent,
+P07,S09,inconsistent,Xavi made his 148th Champions League appearance against PSG on Tuesday night. The article states that Casillas is in line to equal Xavi's total in both Champions League games and knockout matches.
+P07,S01,inconsistent,Cook competed against Mauro Sarmiento at the Olympic Games in Beijing in 2008.
+P07,S15,inconsistent,Xavi also set the record for the most appearances in the knockout phase of the competition having now featured in 53 matches in the latter stages.
+P07,S06,inconsistent,"The summary states: 'Cook has applied for Moldovan citizenship after receiving funding from Moldovan billionaire Igor Iuzefovici...' The article states: 'Cook applied for citizenship after receiving funding from Moldovan billionaire Igor Iuzefovici and has now received his passport from the small eastern European state.' The summary suggests Cook received his passport, while the article states he *has* received his passport."

@@ -1,0 +1,21 @@
+participant_id,summary_id,judgment,evidence
+P06,S04,consistent,
+P06,S08,consistent,
+P06,S10,consistent,
+P06,S12,consistent,
+P06,S19,consistent,
+P06,S06,consistent,
+P06,S07,consistent,
+P06,S20,consistent,
+P06,S17,consistent,
+P06,S02,inconsistent,"Summary claims: ""Vincent Stanford, who is charged with killing Ms Scott, 26, in Easter Sunday, dumped her body into bushland and dumped her remains in a bubble bath."" Article states: ""Ms Scott's body was found by police in Cocoparra National Park, north of Griffith, NSW, on April 10."" The summary incorrectly states that Stanford dumped her remains in a bubble bath, while the article specifies the body was found in Cocoparra National Park, not in a bubble bath."
+P06,S11,inconsistent,"Summary claims Cook has been denied citizenship by Moldova, but the article states he has 'received his passport from the small eastern European state' and 'has been granted citizenship by Moldova'. The summary also states Cook has applied for citizenship after receiving funding from Moldovan billionaire Igor, but the article states he 'applied for citizenship after receiving funding from Moldovan billionaire Igor Iuzefovici and has now received his passport'. The summary says Cook has been denied citizenship by Moldova, which contradicts the article's clear statement that citizenship was granted."
+P06,S01,consistent,
+P06,S16,consistent,
+P06,S05,consistent,
+P06,S09,consistent,
+P06,S15,consistent,
+P06,S18,consistent,
+P06,S13,consistent,
+P06,S03,consistent,
+P06,S14,consistent,

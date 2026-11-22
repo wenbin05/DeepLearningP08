@@ -6,6 +6,19 @@ Research question: does LoRA placement in BART-base's encoder self-attention,
 decoder self-attention, or encoder–decoder cross-attention affect summarization
 quality when trainable capacity is held fixed?
 
+**Final CPU study completed:** 39/39 runs and 78/78 held-out test evaluations;
+final checks and prediction-based ROUGE rescoring passed on November 15, 2026.
+The study uses 1,024 CNN/DailyMail training examples, 64 validation examples,
+and 128 test examples per dataset, with three seeds. Full fine-tuning uses an
+explicitly separate memory-adjusted microbatch protocol.
+
+**Final deliverables:** [report PDF](deliverables/final/Group04_Final_Report.pdf),
+[slides PDF](deliverables/final/Group04_Slides.pdf),
+[editable PowerPoint](deliverables/final/Group04_Slides.pptx), and
+[timed video script](deliverables/final/VIDEO_SCRIPT.md).
+See [build, reproduction and author-review instructions](deliverables/final/README.md).
+These documents are prepared for author review; the team still needs to record the video.
+
 At rank 8 on Q/V, each isolated region has **147,456 trainable parameters**.
 All-attention Q/V LoRA has 442,368. Only the three isolated placements have matched
 parameter budgets. Full fine-tuning has 139,420,416; zero-shot has zero trainable
@@ -14,15 +27,14 @@ verifies actual instantiated PEFT parameter shapes using meta tensors, without
 pretrained downloads. Saved manifests count real loaded models, and report percentages
 against total parameters **including** adapters (147,456 / 139,567,872 ≈ 0.10565%).
 
-**Evidence status:** the team supplied four completed single-seed Colab pilot records:
-zero-shot plus the three isolated placements. They use 1,024 training examples,
-32 updates, and the same 64 validation examples. The revised report and
-[retained artifacts](experiments/midterm_pilot_seed42/README.md) describe these
-measurements and limitations. Full-baseline reproduction, multi-seed uncertainty,
-full test/transfer results and factuality evaluation remain outstanding. Earlier
-unsupported benchmark scores and examples remain excluded. See
-[the audit](docs/AUDIT.md) for the original discrepancies. The proposal remains a
-historical plan, not a validated experiment record.
+**Evidence status:** the final local study supersedes the historical single-seed
+midterm pilot. Saved final summaries, protocol files and human-rating analysis are
+included in `deliverables/final/evidence/`. The human study has 10 participants,
+20 summaries and 200 ratings, with low agreement (Fleiss' kappa 0.044).
+The final report distinguishes descriptive findings from stronger unsupported claims.
+Original pilot records remain in `experiments/midterm_pilot_seed42/`; they are not
+pooled with final results. Full benchmark evaluation and matched FLOP budgets are
+not claimed. Raw training checkpoints remain in local ignored results directories.
 
 ## Setup and checks
 
@@ -85,8 +97,7 @@ of interrupted training remains unsupported; incomplete runs are preserved.
 
 Report these as **single-seed, short-training, validation-subset pilot results**.
 There is no standard deviation, convergence finding, full-test benchmark, or
-published-baseline reproduction claim. The remaining seeds, guide-required
-baselines/ablations and human study are still outstanding. This reduced execution
+published-baseline reproduction claim. At the pilot stage, further seeds, baselines, ablations and human evaluation were outstanding; the separate final CPU study now supplies them. This reduced execution
 plan does not establish that the instructor waived any rubric requirement.
 GPU duration has not been measured here; use the first run's progress to plan time.
 

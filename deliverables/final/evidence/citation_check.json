@@ -1,0 +1,42 @@
+{
+  "bart": {
+    "url": "https://aclanthology.org/2020.acl-main.703/",
+    "fetched": false,
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  "prefix": {
+    "url": "https://aclanthology.org/2021.acl-long.353/",
+    "fetched": false,
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  "factcc": {
+    "url": "https://aclanthology.org/2020.emnlp-main.750/",
+    "fetched": false,
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  "lora": {
+    "url": "https://arxiv.org/abs/2106.09685",
+    "fetched": false,
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  "adalora": {
+    "url": "https://arxiv.org/abs/2303.10512",
+    "fetched": false,
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  "unified": {
+    "url": "https://arxiv.org/abs/2110.04366",
+    "fetched": false,
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  "dylora": {
+    "url": "https://aclanthology.org/2023.eacl-main.239/",
+    "fetched": false,
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  },
+  "weightlora": {
+    "url": "https://aclanthology.org/2026.acl-long.623/",
+    "fetched": false,
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+  }
+}

@@ -50,6 +50,9 @@ def parse_args(argv=None):
     p.add_argument('--num_train_epochs', type=float, default=3)
     p.add_argument('--max_steps', type=int, default=-1, help='Positive value caps updates for compute-controlled pilots')
     p.add_argument('--warmup_steps', type=int, default=500)
+    p.add_argument('--train_batch_size', type=int, help='Override per-device batch size for a separate study')
+    p.add_argument('--gradient_accumulation_steps', type=int)
+    p.add_argument('--eval_batch_size', type=int)
     p.add_argument('--model_revision', default='main')
     p.add_argument('--dataset_revision', default='main')
     p.add_argument('--fp16', action='store_true')
@@ -130,6 +133,14 @@ def main(argv=None):
     config = ExperimentConfig(**{f: getattr(args, f) for f in (
         'placement', 'lora_rank', 'projections', 'prefix_tokens', 'num_train_epochs',
         'warmup_steps', 'data_seed', 'model_revision', 'dataset_revision', 'fp16')})
+    for argument, field in (('train_batch_size', 'per_device_train_batch_size'),
+                            ('eval_batch_size', 'per_device_eval_batch_size'),
+                            ('gradient_accumulation_steps', 'gradient_accumulation_steps')):
+        value = getattr(args, argument)
+        if value is not None:
+            if value <= 0:
+                raise ValueError(f'--{argument} must be positive')
+            setattr(config, field, value)
     config.model_revision = resolve_revision(config.model_name_or_path, config.model_revision)
     config.dataset_revision = resolve_revision('abisee/cnn_dailymail', config.dataset_revision, 'dataset')
     run = Path(args.output_dir) / f'{config.placement}_r{config.lora_rank}_{config.projections}_seed{args.seed}'

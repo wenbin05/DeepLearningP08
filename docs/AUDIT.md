@@ -1,5 +1,14 @@
 # P08 implementation and report audit
 
+Finalization update (11 November 2026): instructor feedback has now been supplied.
+It explicitly recognizes the two-member group and recommends prioritizing the
+LoRA-placement comparison, with exact trainable counts and consistent training.
+The earlier statements below about missing feedback are historical. The feedback
+does not explicitly waive the remaining P08 objectives. New comparison checks,
+a staged final-study runner, prediction rescoring and human-rating tools are
+documented in [FINALIZATION.md](FINALIZATION.md); they do not establish that the
+remaining experiments or participant study have been completed.
+
 Update after the initial audit: the team has now supplied four completed seed-42
 Colab pilot records, retained under `experiments/midterm_pilot_seed42`. The revised
 report includes those measured validation-subset results. The sections below record

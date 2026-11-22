@@ -1,0 +1,14 @@
+{
+  "expected_runs": 39,
+  "experiment_matrix_complete": true,
+  "rouge_recomputed": true,
+  "main_study": "/workspace/DeepLearningP08/results/cpu_placement_v1",
+  "full_ft_study": "/workspace/DeepLearningP08/results/cpu_full_ft_batch1_v1",
+  "full_ft_microbatch_exception": {
+    "main_microbatch": 2,
+    "full_ft_microbatch": 1,
+    "effective_batch_both": 32,
+    "interpretation": "Full FT is a memory-adjusted reference baseline; microbatching is not identical to the other configurations."
+  },
+  "problems": []
+}

@@ -5,6 +5,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from src.comparison import validate_comparison
 
 
 def generate_pareto_plot(summary_path, output_path, dataset='cnn_dailymail', phase='test'):
@@ -12,16 +13,7 @@ def generate_pareto_plot(summary_path, output_path, dataset='cnn_dailymail', pha
             if r['dataset'] == dataset and r['phase'] == phase]
     if not data:
         raise ValueError('No results for the requested dataset and phase')
-    # Do not put different split subsets or generation protocols on one comparison plot.
-    def evaluation_protocol(row):
-        p = row['protocol']
-        return (p['evaluation'] or p['data']['validation'], p['generation'],
-                p['metric_protocol'], p['reference_protocol'])
-    if any(evaluation_protocol(r) != evaluation_protocol(data[0]) for r in data):
-        raise ValueError('Incompatible data or generation protocols in comparison')
-    training_data = [r['protocol']['data']['train'] for r in data if r['protocol']['data']['train'] is not None]
-    if training_data and any(t != training_data[0] for t in training_data):
-        raise ValueError('Different training subsets in comparison')
+    validate_comparison(data)
     fig, ax = plt.subplots(figsize=(9, 5))
     for row in data:
         label = f"{row['placement']} r={row['rank']} {row['projections']} (n={row['n']})"

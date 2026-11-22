@@ -1,0 +1,18 @@
+{
+  "report_main_pages": 8,
+  "report_total_pages": 10,
+  "slide_count": 18,
+  "speaking_slides": 16,
+  "target_video_minutes": 20,
+  "narration_words": 2375,
+  "all_78_rounded_test_metric_cells_present": true,
+  "test_config_dataset_rows": 26,
+  "training_source_hash_unchanged": true,
+  "training_source_sha256": "e46337fb38404558f91e64427e18c3d930682793f42d913bce05bbf7735b848e",
+  "survey_response_files": 10,
+  "powerpoint_notes_and_shape_bounds_checked": true,
+  "pdf_pages_visually_reviewed": true,
+  "latex_no_overflow_or_undefined_references": true,
+  "new_training_reproduction_not_executed": true,
+  "primary_citations_network_blocked": true
+}

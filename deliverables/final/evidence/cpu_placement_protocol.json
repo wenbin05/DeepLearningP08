@@ -1,0 +1,21 @@
+{
+  "study": "cpu_placement_v1",
+  "model_revision": "aadd2ab0ae0c8268c7c9693540e9904811f36177",
+  "cnn_revision": "96df5e686bee6baa90b8bee7c28b81fa3fa6223d",
+  "xsum_revision": "7d4d486c2f8ef850b1a11aead99b894ff3dd7da9",
+  "seeds": [
+    42,
+    123,
+    999
+  ],
+  "train_samples": 1024,
+  "validation_samples": 64,
+  "test_samples": 128,
+  "epochs": 3,
+  "warmup_steps": 10,
+  "train_batch_size": 2,
+  "gradient_accumulation_steps": 16,
+  "eval_batch_size": 2,
+  "fp16": false,
+  "data_seed": 42
+}
