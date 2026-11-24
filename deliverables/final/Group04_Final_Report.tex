@@ -1,8 +1,18 @@
-\documentclass[10pt,letterpaper]{article}
-\usepackage[margin=0.8in]{geometry}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.82in]{geometry}
 \usepackage{amsmath,amssymb,booktabs,graphicx,xcolor,hyperref,fancyhdr,enumitem,array}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\usepackage{lmodern,microtype,titlesec,caption,float}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.65em}{}
+\titlespacing*{\section}{0pt}{13pt plus 2pt}{4pt}
+\titlespacing*{\subsection}{0pt}{9pt plus 1pt}{2pt}
+\captionsetup{font=small,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=false,skip=5pt}
+\setlength{\intextsep}{9pt plus 2pt minus 2pt}
+\renewcommand{\arraystretch}{1.10}
+\raggedbottom
+\clubpenalty=10000
+\widowpenalty=10000
 \definecolor{navy}{HTML}{18364A}
 \hypersetup{colorlinks=true,urlcolor=navy,linkcolor=navy,citecolor=navy}
 \setlength{\emergencystretch}{3em}
@@ -34,7 +44,7 @@ Our contributions are:
 \item A descriptive human evaluation and a concrete failure analysis that separate lexical overlap from factual consistency.
 \end{itemize}
 The final study extends the midterm's single-seed validation pilot. Its results use held-out test subsets and are not pooled with pilot measurements. The limited data and training budget are part of the experimental scope, rather than evidence of benchmark-scale reproduction.
-\newpage
+
 \section{Related Work and Method}
 \subsection{Generation, adaptation and evaluation}
 BART's denoising pretraining provides the encoder--decoder backbone for this study~\cite{bart}. LoRA and Prefix-Tuning offer two ways to adapt frozen models~\cite{lora,prefix}: low-rank weight updates and learned continuous conditioning, respectively. Comparing them under a short training schedule measures behavior under that schedule, not the best attainable result of either method.
@@ -62,7 +72,7 @@ We minimize teacher-forced token cross-entropy,
 where $N$ counts non-padding target tokens in the loss calculation. Labels use $-100$ for ignored padding. Generation is evaluated separately from this training objective.
 
 Baselines are unadapted BART, all-attention QV LoRA at rank eight, Prefix-Tuning with 20 virtual tokens and no prefix projection, and full fine-tuning. All-attention LoRA reaches all three attention regions. Prefix-Tuning uses the PEFT sequence-to-sequence implementation; it is not a placement-matched control.
-\newpage
+
 \section{Experimental Protocol}
 \subsection{Data and preprocessing}
 The official CNN/DailyMail 3.0.0 splits~\cite{data} supply 1,024 training, 64 validation and 128 test examples. A separate 128-example XSum test subset measures transfer without XSum training or tuning. Subsets are selected with fixed data seed 42, independently of training seeds 42, 123 and 999. Saved IDs and hashes make membership comparable across configurations. Training order and adapter initialization vary with the training seed.
@@ -78,10 +88,12 @@ Runs use CPU execution with two compute threads and an 8 GiB memory limit, witho
 Equal effective batch size preserves nominal examples per optimizer update; it does not guarantee identical dropout draws or token weighting. Full FT also uses a different learning rate. We therefore label it a \textit{memory-adjusted reference baseline}. The guide's matched-compute objective is only partially met: data exposure and update counts match, but FLOPs and wall-clock time are not equalized. The three main placements retain the same microbatch, optimizer and data settings.
 \subsection{Metrics and uncertainty}
 ROUGE-1, ROUGE-2 and ROUGE-L are stemmed per-example F1 scores~\cite{rouge}, macro-averaged and multiplied by 100 using pinned Hugging Face Evaluate ROUGE. ROUGE-L is not ROUGE-Lsum. We report mean and sample standard deviation over three training seeds, with denominator $n-1$. These deviations measure seed variability on fixed test examples, not population confidence intervals. Unadapted outputs are identical across the three seed labels, so their zero deviation does not represent independent trained models. No significance test is claimed.
-\newpage
+
 \section{Held-Out Results}
 \subsection{CNN/DailyMail}
-\begin{center}\small
+\begin{table}[H]
+\centering
+\small
 \begin{tabular}{lrrr}\toprule Configuration & ROUGE-1 & ROUGE-2 & ROUGE-L\\\midrule
 Unadapted & 38.61 $\pm$ 0.00 & 16.91 $\pm$ 0.00 & 24.29 $\pm$ 0.00\\
 Encoder & 37.75 $\pm$ 0.29 & 16.48 $\pm$ 0.15 & 23.29 $\pm$ 0.23\\
@@ -91,14 +103,16 @@ All-attention & 38.92 $\pm$ 0.08 & 16.84 $\pm$ 0.15 & 25.08 $\pm$ 0.24\\
 Prefix & 15.05 $\pm$ 3.03 & 2.41 $\pm$ 0.97 & 10.63 $\pm$ 1.42\\
 Full FT* & 40.06 $\pm$ 0.62 & 17.21 $\pm$ 0.33 & 26.34 $\pm$ 0.39\\
 \bottomrule\end{tabular}
-\end{center}
-\textbf{Table 1.} CNN/DailyMail test subset (128 examples). Mean $\pm$ sample SD across three seeds. *Full FT uses the memory-adjusted protocol.
+\caption{CNN/DailyMail test subset (128 examples). Mean $\pm$ sample SD across three seeds. *Full FT uses the memory-adjusted protocol.}
+\end{table}
 
 Cross-attention has the highest mean ROUGE-1, ROUGE-2 and ROUGE-L among the three isolated placements. Its ROUGE-1 exceeds encoder by 0.81 points and decoder by 1.06 points. However, it is 0.05 points below unadapted BART on ROUGE-1 and 0.13 points below it on ROUGE-2. Cross-attention's ROUGE-L is 0.14 points higher. Thus the placement ranking is clearer than the case for improvement over the unadapted model. All-attention QV LoRA has a higher ROUGE-1 mean, but also uses three times the adapter budget.
 
 Full fine-tuning has the highest mean scores in this baseline table. Prefix-Tuning performs poorly in this implementation and short-budget setting. Its CNN/DailyMail ROUGE-1 is 15.05 $\pm$ 3.03 and teacher-forced test loss is 7.10 $\pm$ 0.34. The evidence supports an unsuccessful baseline configuration, not a general rejection of Prefix-Tuning. More training and method-specific optimization would be needed to distinguish those explanations.
 \subsection{CNN/DailyMail-to-XSum transfer}
-\begin{center}\small
+\begin{table}[H]
+\centering
+\small
 \begin{tabular}{lrrr}\toprule Configuration & ROUGE-1 & ROUGE-2 & ROUGE-L\\\midrule
 Unadapted & 16.84 $\pm$ 0.00 & 2.62 $\pm$ 0.00 & 10.51 $\pm$ 0.00\\
 Encoder & 16.68 $\pm$ 0.16 & 2.85 $\pm$ 0.10 & 10.60 $\pm$ 0.10\\
@@ -108,13 +122,15 @@ All-attention & 17.16 $\pm$ 0.09 & 3.01 $\pm$ 0.03 & 11.00 $\pm$ 0.06\\
 Prefix & 9.75 $\pm$ 1.71 & 1.26 $\pm$ 0.50 & 7.76 $\pm$ 1.07\\
 Full FT* & 19.17 $\pm$ 0.23 & 3.16 $\pm$ 0.21 & 12.59 $\pm$ 0.14\\
 \bottomrule\end{tabular}
-\end{center}
-\textbf{Table 2.} XSum test subset (128 examples), evaluated without further tuning. The same decoding policy is retained.
+\caption{XSum test subset (128 examples), evaluated without further tuning. The same decoding policy is retained.}
+\end{table}
 
 The isolated placements' ROUGE-1 means are close: 16.68 for encoder, 16.85 for decoder and 16.87 for cross-attention. Cross-attention exceeds decoder by only 0.02 points. Encoder has the highest ROUGE-2 of these three placements, so there is no uniform transfer ranking across metrics. Full FT reaches 19.17 ROUGE-1 and all-attention QV LoRA reaches 17.16. These results do not support the proposed expectation that PEFT necessarily transfers better than full fine-tuning. Dataset style, the fixed generation policy and limited training all remain relevant.
-\newpage
+
 \section{Rank and Projection Ablations}
-\begin{center}\small
+\begin{table}[H]
+\centering
+\small
 \begin{tabular}{lrrr}\toprule All-attention configuration & Trainable & CNN R-1 & XSum R-1\\\midrule
 QV, r=4 & 221,184 & 39.12 $\pm$ 0.46 & 17.24 $\pm$ 0.14\\
 QV, r=8 & 442,368 & 38.92 $\pm$ 0.08 & 17.16 $\pm$ 0.09\\
@@ -124,40 +140,48 @@ K, r=8 & 221,184 & 38.65 $\pm$ 0.17 & 16.70 $\pm$ 0.07\\
 V, r=8 & 221,184 & 39.08 $\pm$ 0.35 & 17.05 $\pm$ 0.07\\
 QKVO, r=8 & 884,736 & 39.54 $\pm$ 0.32 & 17.85 $\pm$ 0.08\\
 \bottomrule\end{tabular}
-\end{center}
-\textbf{Table 3.} Rank and projection ablations. Q, K, V and O denote query, key, value and attention-output projections. All rows use three seeds; the full ROUGE tables appear in the appendix.
+\caption{Rank and projection ablations. Q, K, V and O denote query, key, value and attention-output projections. All rows use three seeds; the full ROUGE tables appear in the appendix.}
+\end{table}
 
-\begin{center}\includegraphics[width=\linewidth]{figures/ablations.png}\end{center}
-\textbf{Figure 1.} ROUGE-1 against trainable parameters. Error bars show seed SD. Vertical axes are restricted to the observed range to make differences visible; these are not confidence intervals. Green circles vary QV rank; purple squares vary projection targets at rank eight.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{figures/ablations.png}
+\caption{ROUGE-1 against trainable parameters. Error bars show seed SD. Vertical axes are restricted to the observed range to make differences visible; these are not confidence intervals. Green circles vary QV rank; purple squares vary projection targets at rank eight.}
+\end{figure}
 
 Increasing QV rank from four to eight to sixteen does not yield monotonic gains. CNN/DailyMail ROUGE-1 changes from 39.12 to 38.92 to 38.87; XSum changes from 17.24 to 17.16 to 17.17. Alpha is fixed at 16, so the update multiplier $\alpha/r$ changes from four to two to one. This is an ablation of the implemented rank configurations, not a test that isolates rank from scaling.
 
 Q-only, K-only and V-only each use 221,184 parameters at rank eight. V-only has the highest ROUGE-1 mean among these single-projection variants on both datasets, while K-only has the highest CNN/DailyMail ROUGE-2. QKVO has the highest ROUGE-1 among the LoRA configurations evaluated, but requires 884,736 trainable parameters. At the same parameter count, QKVO rank eight exceeds QV rank sixteen in ROUGE-1 on both datasets. That comparison changes projection coverage, rank and scaling together; it cannot identify which factor causes the difference.
 
 The ablations suggest that parameter count alone is insufficient to predict quality within this setup. They do not establish an optimal rank or target set for larger training datasets, other learning rates or other decoding policies. The test set was used to report the predefined matrix, not to retrain a selected winner.
-\newpage
+
 \section{Human Factual-Consistency Evaluation}
 \subsection{Design and provenance}
 Ten participants each rated the same twenty generated summaries: five shared CNN/DailyMail articles times four configurations (unadapted, encoder, decoder and cross-attention), using training seed 42. Summary order was randomized separately for each packet, and model identities were hidden during rating. Shared items allow agreement to be measured; presenting different orders does not create different evaluation examples.
 
 Participants compared each summary with its article and selected consistent, inconsistent or uncertain, with space for supporting explanations. The project team reports that participants completed the ratings independently. The final submitted response files are preserved unchanged. The analysis uses those human responses, not an AI evaluator substituted for participants.
-\begin{center}\small
+\begin{table}[H]
+\centering
+\small
 \begin{tabular}{lrrr}\toprule Configuration & Consistent & Inconsistent & Consistent share\\\midrule
 Cross-attention &29&21&58\%\\
 Unadapted &27&23&54\%\\
 Decoder &23&27&46\%\\
 Encoder &19&31&38\%\\\bottomrule\end{tabular}
-\end{center}
-\textbf{Table 4.} Each configuration receives 50 ratings over five summaries. There are no uncertain responses. Across all configurations, 98 of 200 ratings are consistent.
-\begin{center}\includegraphics[width=.78\linewidth]{figures/human.png}\end{center}
-\textbf{Figure 2.} Descriptive proportions of ratings marked consistent. These are not estimates from fifty independent articles per configuration.
+\caption{Each configuration receives 50 ratings over five summaries. There are no uncertain responses. Across all configurations, 98 of 200 ratings are consistent.}
+\end{table}
+\begin{figure}[H]
+\centering
+\includegraphics[width=.78\linewidth]{figures/human.png}
+\caption{Descriptive proportions of ratings marked consistent. These are not estimates from fifty independent articles per configuration.}
+\end{figure}
 \subsection{Agreement and interpretation}
 Mean pairwise agreement is 0.5222 and Fleiss' $\kappa$ is 0.0441, indicating little agreement beyond chance under this coding. Some explanations treat missing details, name variations or stylistic issues as inconsistencies, which can broaden the intended factuality criterion. We retain those judgments rather than recoding them to improve the ranking.
 
 Cross-attention has the highest consistent-rating proportion, but only two more consistent judgments than unadapted BART. Five articles, one training seed and low agreement are insufficient to establish a reliable factuality advantage. The 200 responses share articles, outputs and participants; treating them as 200 independent examples would overstate the evidence. Full FT, Prefix-Tuning and the additional ablations were not included in this study.
 
 A stronger follow-up would use a brief calibration task, distinguish unsupported claims from omissions, sample more articles and report agreement before interpreting model-level differences. It should preserve independent judgments and preregister any adjudication procedure.
-\newpage
+
 \section{Failure Analysis and Training Cost}
 \subsection{A source-grounded failure}
 One sampled article describes taekwondo athlete Aaron Cook. It states that he is 24, has received a Moldovan passport and plans to represent Moldova. The encoder-LoRA output for seed 42 instead contains these excerpts:
@@ -169,7 +193,9 @@ The age is unsupported by the article, and the citizenship statement contradicts
 
 This is a selected illustrative case, not a measured prevalence estimate. It shows why copying many source words does not ensure support for every proposition. The error includes a numeric change, a polarity reversal and inconsistent attribution. No attention-map or causal intervention was performed, so it cannot be attributed specifically to an internal attention mechanism. The source ID and unedited generated text are preserved in the evidence bundle.
 \subsection{Observed training-loop cost}
-\begin{center}\small
+\begin{table}[H]
+\centering
+\small
 \begin{tabular}{lrrr}\toprule Configuration & Trainable & Fraction (\%) & Loop hours\\\midrule
 Unadapted & 0 & 0.00000 & 0.00 $\pm$ 0.00\\
 Encoder & 147,456 & 0.10565 & 2.31 $\pm$ 0.07\\
@@ -179,13 +205,13 @@ All-attention & 442,368 & 0.31629 & 2.35 $\pm$ 0.03\\
 Prefix & 184,320 & 0.13203 & 1.44 $\pm$ 0.04\\
 Full FT* & 139,420,416 & 100.00000 & 2.39 $\pm$ 0.01\\
 \bottomrule\end{tabular}
-\end{center}
-\textbf{Table 5.} Mean $\pm$ sample SD of successful training-loop wall times. Fractions use total model parameters including adapters. Loop time includes epoch validation and checkpoint saving, but excludes initial model/data preparation and the separately executed final validation and test prediction passes. The failed full-FT attempt is excluded.
+\caption{Mean $\pm$ sample SD of successful training-loop wall times. Fractions use total model parameters including adapters. Loop time includes epoch validation and checkpoint saving, but excludes initial model/data preparation and the separately executed final validation and test prediction passes. The failed full-FT attempt is excluded.}
+\end{table}
 
 Equal adapter counts do not imply equal runtime. Encoder-only adaptation takes about 2.31 hours per training loop, compared with 1.39 for cross-attention and 1.42 for decoder-only adaptation. Backpropagation paths and sequence lengths offer plausible explanations, but these measurements do not isolate their contributions. Unadapted BART has no training loop; its generation cost is not zero.
 
 The roughly 0.106\% trainable fraction of each isolated placement represents a reduction in optimized parameters, not a corresponding reduction in total model memory or total computation. Frozen weights and activations still occupy memory. The full-FT memory failure makes this distinction concrete. No peak-memory ranking across configurations is claimed because a consistent full-run memory benchmark was not collected.
-\newpage
+
 \section{Discussion, Limitations and Conclusion}
 \subsection{What the study supports}
 Under the shared short-budget protocol, cross-attention is the strongest isolated placement on CNN/DailyMail by the three reported ROUGE means. Holding the target projections, rank, parameter count and training settings fixed makes this comparison more interpretable than comparing adapters with different capacity. It is still a finite experiment on one backbone and one training subset; the measurements do not establish a universal architectural preference.
@@ -203,7 +229,8 @@ A concrete next experiment would repeat the three matched placements on a larger
 The team's prior declaration assigns 50\% to Choo Wen Bin and 50\% to Nai Junn Rong. Proposed responsibilities place experiment integration and report coordination with Wen Bin, and literature/evaluation coordination with Junn Rong; these allocations require the authors' final confirmation.
 
 OpenAI Codex assisted with implementation corrections, experiment orchestration on the local CPU environment, verification, analysis drafts, figures, report drafting and presentation preparation. The academic-humanizer skill guided clarity and claim calibration. The final numerical results come from executed jobs and saved predictions; the human ratings are team-supplied. The authors must review and take ownership of the analysis and conclusions, as required by the course's AI-use policy. This document does not claim that the final CPU jobs or prose were produced without AI assistance.
-\newpage
+
+\clearpage
 \begin{thebibliography}{10}
 \bibitem{bart} M. Lewis et al. BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension. ACL, pp. 7871--7880, 2020.
 \bibitem{lora} E. J. Hu et al. LoRA: Low-Rank Adaptation of Large Language Models. ICLR, 2022. arXiv:2106.09685.
@@ -237,7 +264,7 @@ Prefix & 15.05 $\pm$ 3.03 & 2.41 $\pm$ 0.97 & 10.63 $\pm$ 1.42\\
 Unadapted & 38.61 $\pm$ 0.00 & 16.91 $\pm$ 0.00 & 24.29 $\pm$ 0.00\\
 \bottomrule\end{tabular}
 \end{center}
-\newpage
+
 \subsection{XSum}
 \begin{center}\small
 \begin{tabular}{lrrr}\toprule Configuration & ROUGE-1 & ROUGE-2 & ROUGE-L\\\midrule
