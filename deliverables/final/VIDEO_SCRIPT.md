@@ -2,7 +2,7 @@
 
 Target: 20:00. Slides 1–8: Choo Wen Bin (10:00). Slides 9–16: Nai Junn Rong (10:00). Both speakers introduce themselves and appear on camera. Timing includes pauses to point at figures. Rehearse; do not pad or rush to match a timestamp. The reference slides are included in the PDF as a closing resource.
 
-This is an AI-assisted rehearsal draft. Revise the analysis into your own understood wording before recording; the course requires author-owned interpretation. The 50/50 split follows the prior team declaration pending confirmation.
+This is an AI-assisted rehearsal draft. Revise the analysis into your own understood wording before recording; the course requires author-owned interpretation. Both members contributed equally.
 
 ## 01. Where to adapt BART? | 00:00–01:15 | Choo Wen Bin
 
@@ -192,9 +192,9 @@ Our contribution is a controlled comparison of where a fixed LoRA budget enters 
 
 The next experiment should repeat the matched placements on a larger fixed training subset and quantify article-level uncertainty. A separate validation study should examine generation-length settings before any new XSum test evaluation.
 
-Our prior contribution declaration is fifty percent each. Wen Bin focuses on experiment integration and report coordination, and I focus on literature and evaluation coordination; we will confirm these responsibilities in the final submission.
+We contributed equally, fifty percent each.
 
-We disclose that OpenAI Codex assisted with code corrections, local experiment orchestration, verification, analysis drafts and presentation preparation. The academic-humanizer skill supported writing clarity. The measurements come from executed experiments, and the human ratings were supplied by the team. Thank you.
+We used OpenAI Codex for code implementation and the first report draft, with the academic-humanizer skill for writing feedback. Codex also helped run and check the experiments and prepare the analysis, figures and presentation. The measurements come from executed experiments, and the human ratings were supplied by the team. Thank you.
 
 **Visual cue:** Pause on the main comparison before moving on.
 
@@ -208,4 +208,4 @@ The narration contains approximately 2,375 words. A 20-minute delivery averages 
 - Check every number and understand each comparison. Do not say “statistically significant,” “full benchmark,” or “proved factuality improvement.”
 - Check the final MP4 plays with audio, ends before 22:00, and is named `Group04_Presentation.mp4`. Submit it with `Group04_Slides.pdf`.
 - If using a OneDrive/Stream link, verify instructor/TA viewing access in a private browser window.
-- Confirm contribution percentages and review AI disclosure and references before submission.
+- Review AI disclosure and references before submission.
