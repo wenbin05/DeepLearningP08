@@ -14,7 +14,9 @@ pre=r'''\documentclass[aspectratio=169,11pt]{beamer}
 \setbeamercolor{normal text}{fg=navy,bg=white}\setbeamercolor{frametitle}{fg=navy}\setbeamercolor{structure}{fg=teal}
 \setbeamerfont{frametitle}{size=\Large,series=\bfseries}
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}{\hspace{6mm}\scriptsize CISC 473 | Group 04 \hfill \insertframenumber\hspace{6mm}\vspace{3mm}}
+\setbeamertemplate{footline}{}
+\setbeamercolor{block title}{fg=white,bg=teal}
+\setbeamercolor{block body}{fg=navy,bg=teal!7}
 \setbeamersize{text margin left=7mm,text margin right=7mm}
 \begin{document}
 '''
@@ -23,7 +25,23 @@ def get(m,d):return next(x for x in rows if x['placement']==m and x['dataset']==
 base=[]
 for m,l in [('zero_shot','Unadapted'),('cross_attn','Cross-attention'),('all_attn','All-attention QV'),('prefix','Prefix'),('full_ft','Full FT*')]:
  a,b=get(m,'cnn_dailymail'),get(m,'xsum');base.append([l,f"{a['metrics']['rouge1']['mean']:.2f} ± {a['metrics']['rouge1']['std']:.2f}",f"{b['metrics']['rouge1']['mean']:.2f} ± {b['metrics']['rouge1']['std']:.2f}"])
-for s in S:
+cover_question = 'Does the location of a LoRA adapter change summary quality when the parameter budget stays fixed?'
+regions = [
+ ('Encoder self-attention', 'Builds a representation of the source article.'),
+ ('Decoder self-attention', 'Tracks the summary generated so far.'),
+ ('Cross-attention', 'Connects the next word in the summary to the source article.'),
+]
+for i,s in enumerate(S):
+ if i==0:
+  pre+=r'\begingroup\setbeamercolor{background canvas}{bg=navy}\begin{frame}[plain]\color{white}'+'\n'
+  pre+=r'{\small CISC 473 $\cdot$ Group 04}\par\vspace{6mm}{\Huge\bfseries Where to adapt BART?}\par\vspace{4mm}'+cover_question+r'\par\vspace{6mm} Choo Wen Bin and Nai Junn Rong\end{frame}\endgroup'+'\n'
+  continue
+ if i==2:
+  pre+=r'\begin{frame}{'+tex(s['title'])+r'}\begin{columns}[T,onlytextwidth]'
+  for title,body in regions:
+   pre+=r'\column{.315\linewidth}\begin{block}{'+title+'}'+body+r'\end{block}'
+  pre+=r'\end{columns}\vspace{6mm}\par BART-base: 6 encoder layers, 6 decoder layers, width 768.\end{frame}'+'\n'
+  continue
  pre+='\\begin{frame}{'+tex(s['title'])+'}\n'
  if s['figure']:
   pre+='\\begin{center}\\includegraphics[width=.88\\linewidth,height=.49\\textheight,keepaspectratio]{figures/'+s['figure']+'}\\end{center}\n'
@@ -66,7 +84,26 @@ def text(sl,x,y,w,h,value,size=23,bold=False,color=navy):
   p=tf.paragraphs[0] if i==0 else tf.add_paragraph();p.text=line;p.font.name='Aptos';p.font.size=Pt(size);p.font.bold=bold;p.font.color.rgb=color;p.space_after=Pt(13)
  return box
 for i,s in enumerate(S+[dict(title=t,bullets=b,notes='Reference slide. No additional narration required.',figure=None,table=None) for t,b in refs]):
- sl=prs.slides.add_slide(prs.slide_layouts[6]);text(sl,.55,.35,12.15,.8,s['title'],30,True)
+ sl=prs.slides.add_slide(prs.slide_layouts[6])
+ sl.notes_slide.notes_text_frame.text=s['notes']
+ if i==0:
+  fill=sl.background.fill;fill.solid();fill.fore_color.rgb=navy
+  white=RGBColor.from_string('FFFFFF')
+  text(sl,.8,1.05,11,.5,'CISC 473  /  Group 04',19,color=white)
+  text(sl,.8,1.95,12,1.2,s['title'],51,True,white)
+  text(sl,.8,3.4,10.7,1.65,cover_question,30,color=white)
+  text(sl,.8,5.65,11,.7,'Choo Wen Bin and Nai Junn Rong',22,color=white)
+  continue
+ text(sl,.55,.35,12.15,.8,s['title'],30,True)
+ if i==2:
+  for col,(title,body) in enumerate(regions):
+   x=.65+col*4.08
+   header=text(sl,x,2,3.85,.7,title,19,True,RGBColor.from_string('FFFFFF'))
+   header.fill.solid();header.fill.fore_color.rgb=teal
+   card=text(sl,x,2.7,3.85,1.9,body,22)
+   card.fill.solid();card.fill.fore_color.rgb=RGBColor.from_string('EAF5F3')
+  text(sl,.65,5.45,12,.8,'BART-base: 6 encoder layers, 6 decoder layers, width 768.',22)
+  continue
  y=1.5
  if s['figure']:
   from PIL import Image
@@ -81,7 +118,6 @@ for i,s in enumerate(S+[dict(title=t,bullets=b,notes='Reference slide. No additi
   y=4.4
  size=19 if s['figure'] or s['table'] else (20 if i>=16 else 25)
  text(sl,.75,y,11.8,6.85-y,'\n'.join('• '+x for x in s['bullets']),size)
- text(sl,.55,7.1,10,.25,'CISC 473 | Group 04 | github.com/wenbin05/DeepLearningP08',10,color=teal);text(sl,12.1,7.1,.7,.25,str(i+1),10)
  sl.notes_slide.notes_text_frame.text=s['notes']
 prs.save(O/'Group04_Slides.pptx')
 print(f'Created 18-slide PDF source and PowerPoint; narration {words} words, {words/20:.1f} words/min including pauses.')

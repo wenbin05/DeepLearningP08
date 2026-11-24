@@ -4,17 +4,13 @@
 \setbeamercolor{normal text}{fg=navy,bg=white}\setbeamercolor{frametitle}{fg=navy}\setbeamercolor{structure}{fg=teal}
 \setbeamerfont{frametitle}{size=\Large,series=\bfseries}
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}{\hspace{6mm}\scriptsize CISC 473 | Group 04 \hfill \insertframenumber\hspace{6mm}\vspace{3mm}}
+\setbeamertemplate{footline}{}
+\setbeamercolor{block title}{fg=white,bg=teal}
+\setbeamercolor{block body}{fg=navy,bg=teal!7}
 \setbeamersize{text margin left=7mm,text margin right=7mm}
 \begin{document}
-\begin{frame}{Where to adapt BART?}
-\begin{itemize}
-\item Group 04 $\bullet$ Choo Wen Bin and Nai Junn Rong
-\item Question: does LoRA placement matter at the same parameter budget?
-\item BART-base $\bullet$ news summarization $\bullet$ CPU experiment
-\item 39 runs completed; conclusions limited to fixed data subsets
-\end{itemize}
-\end{frame}
+\begingroup\setbeamercolor{background canvas}{bg=navy}\begin{frame}[plain]\color{white}
+{\small CISC 473 $\cdot$ Group 04}\par\vspace{6mm}{\Huge\bfseries Where to adapt BART?}\par\vspace{4mm}Does the location of a LoRA adapter change summary quality when the parameter budget stays fixed?\par\vspace{6mm} Choo Wen Bin and Nai Junn Rong\end{frame}\endgroup
 \begin{frame}{Three ideas motivate the comparison}
 \begin{itemize}
 \item BART: a pretrained encoder--decoder for conditional generation
@@ -24,15 +20,7 @@
 \item Our contribution: a controlled architectural comparison
 \end{itemize}
 \end{frame}
-\begin{frame}{Three locations, three computational roles}
-\begin{itemize}
-\item Encoder self-attention: represent the source article
-\item Decoder self-attention: represent the generated prefix
-\item Cross-attention: connect decoder states to the source
-\item BART-base: 6 encoder layers, 6 decoder layers, width 768
-\item The role motivates a hypothesis; it does not determine the result
-\end{itemize}
-\end{frame}
+\begin{frame}{Three locations, three computational roles}\begin{columns}[T,onlytextwidth]\column{.315\linewidth}\begin{block}{Encoder self-attention}Builds a representation of the source article.\end{block}\column{.315\linewidth}\begin{block}{Decoder self-attention}Tracks the summary generated so far.\end{block}\column{.315\linewidth}\begin{block}{Cross-attention}Connects the next word in the summary to the source article.\end{block}\end{columns}\vspace{6mm}\par BART-base: 6 encoder layers, 6 decoder layers, width 768.\end{frame}
 \begin{frame}{Match capacity before comparing placement}
 \begin{itemize}
 \item W = W$_0$ + ($\alpha$/r)BA; the backbone stays frozen
